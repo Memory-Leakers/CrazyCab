@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="HeaderFiles">
+      <UniqueIdentifier>{ed30c304-8ff5-4da6-9fa1-3a41a2a324b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFiles">
+      <UniqueIdentifier>{082e6d5b-0f73-4d15-9343-239fc33b375c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFiles\Application">
+      <UniqueIdentifier>{b75a6de0-8c83-4b07-983b-374505cd8428}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFiles\Modules">
+      <UniqueIdentifier>{425f363c-8d26-4fa8-b529-3c9ce91fc263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFiles\BaseClass">
+      <UniqueIdentifier>{a3f0710a-bccb-4f6d-abf5-932dbcbbef6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFiles\Scenes">
+      <UniqueIdentifier>{1b5ec822-5a88-424d-86b1-34028864e566}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFiles\Tools">
+      <UniqueIdentifier>{bfca9bef-5c40-4324-a9a6-1f2a7941f5ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFiles\Application">
+      <UniqueIdentifier>{9168770c-c75a-4b51-98d2-ad859b7fba1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFiles\Modules">
+      <UniqueIdentifier>{c21175bc-246c-462d-8ffe-993cf8cfbb32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFiles\BaseClass">
+      <UniqueIdentifier>{5956c8c4-5809-477b-83d2-2427a8986852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFiles\GameObjects">
+      <UniqueIdentifier>{939f5517-1ea4-4821-9b1f-0f6034e4d14d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFiles\GameObjects">
+      <UniqueIdentifier>{3aa2161d-63c4-452f-8f47-59c248ace91a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFiles\Scenes">
+      <UniqueIdentifier>{24fdb083-15bd-4c18-89fc-81ce40293f0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFiles\Tools">
+      <UniqueIdentifier>{be86ef8a-a162-4314-8962-8e3f880c10fd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>HeaderFiles\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Globals.h">
+      <Filter>HeaderFiles\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>SourceFiles\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>SourceFiles\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="glmath.cpp">
+      <Filter>SourceFiles\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleAudio.cpp">
+      <Filter>SourceFiles\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleInput.cpp">
+      <Filter>SourceFiles\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleRenderer3D.cpp">
+      <Filter>SourceFiles\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleWindow.cpp">
+      <Filter>SourceFiles\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Module.cpp">
+      <Filter>SourceFiles\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>SourceFiles\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="ModulePhysics3D.cpp">
+      <Filter>SourceFiles\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>SourceFiles\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysBody3D.cpp">
+      <Filter>SourceFiles\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysVehicle3D.cpp">
+      <Filter>SourceFiles\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleCamera3D.cpp">
+      <Filter>SourceFiles\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScene.cpp">
+      <Filter>SourceFiles\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>SourceFiles\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>SourceFiles\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>HeaderFiles\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGame.cpp">
+      <Filter>SourceFiles\Scenes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h">
+      <Filter>HeaderFiles\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="List.h">
+      <Filter>HeaderFiles\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="MemLeaks.h">
+      <Filter>HeaderFiles\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>HeaderFiles\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>HeaderFiles\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="glmath.h">
+      <Filter>HeaderFiles\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleAudio.h">
+      <Filter>HeaderFiles\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleInput.h">
+      <Filter>HeaderFiles\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleRenderer3D.h">
+      <Filter>HeaderFiles\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleWindow.h">
+      <Filter>HeaderFiles\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>HeaderFiles\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.hpp">
+      <Filter>HeaderFiles\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>HeaderFiles\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ModulePhysics3D.h">
+      <Filter>HeaderFiles\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>HeaderFiles\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysBody3D.h">
+      <Filter>HeaderFiles\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysVehicle3D.h">
+      <Filter>HeaderFiles\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCamera3D.h">
+      <Filter>HeaderFiles\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScene.h">
+      <Filter>HeaderFiles\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>HeaderFiles\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>HeaderFiles\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGame.h">
+      <Filter>HeaderFiles\Scenes</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
