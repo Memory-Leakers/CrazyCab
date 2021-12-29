@@ -3,7 +3,7 @@
 #include "Application.h"
 #include "MemLeaks.h"
 
-#include "SDL2/SDL.h"
+#include "External/SDL/include/SDL.h"
 
 enum main_states
 {
