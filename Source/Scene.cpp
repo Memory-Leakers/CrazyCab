@@ -18,6 +18,20 @@ bool Scene::InitScene()
 
 bool Scene::Start()
 {
+	for (int i = 0; i < gameObjects.count(); i++)
+	{
+		if (gameObjects[i] != nullptr)
+		{
+			if (gameObjects[i]->pendingToDelete)
+			{
+				DestroyGameObject(gameObjects[i]);
+			}
+			else
+			{
+				gameObjects[i]->Start();
+			}
+		}
+	}
 	return true;
 }
 

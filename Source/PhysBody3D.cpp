@@ -15,11 +15,11 @@ PhysBody3D::PhysBody3D(btRigidBody* body, GameObject* gameObject) : body(body)
 // ---------------------------------------------------------
 PhysBody3D::~PhysBody3D()
 {
-	btCollisionShape* shape = body->getCollisionShape();
-	btMotionState* motionState = body->getMotionState();
-	RELEASE(shape);
-	RELEASE(motionState);
-	RELEASE(body);
+	//btCollisionShape* shape = body->getCollisionShape();
+	//btMotionState* motionState = body->getMotionState();
+	//RELEASE(shape);
+	//RELEASE(motionState);
+	//RELEASE(body);
 }
 
 // ---------------------------------------------------------

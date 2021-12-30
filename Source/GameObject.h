@@ -20,7 +20,7 @@ public:
 
 	GameObject(GameObject& obj);
 
-	~GameObject();
+	virtual ~GameObject();
 
 	virtual void OnCollisionEnter(PhysBody3D* col);
 	//virtual void OnCollisionExit(PhysBody* col);

@@ -148,9 +148,7 @@ protected:
 			resize (otherSize);
 			otherArray.copy(0, otherSize, m_data);
 		}
-
-		
-		
+			
 		/// return the number of elements in the array
 		SIMD_FORCE_INLINE	int size() const
 		{	

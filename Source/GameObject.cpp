@@ -23,8 +23,12 @@ GameObject::GameObject(GameObject& obj)
 
 GameObject::~GameObject()
 {
-	RELEASE(pBody);
 }
+
+//GameObject::~GameObject()
+//{
+//
+//}
 
 void GameObject::OnCollisionEnter(PhysBody3D* col)
 {
