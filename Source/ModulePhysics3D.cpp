@@ -1,4 +1,3 @@
-#include "Globals.h"
 #include "ModulePhysics3D.h"
 #include "ModuleInput.h"
 #include "Vehicle.h"
@@ -82,8 +81,10 @@ UpdateStatus ModulePhysics3D::PreUpdate()
 
 			if(pbodyA && pbodyB)
 			{
+				if (pbodyA->gameObject != nullptr)
 				pbodyA->gameObject->OnCollisionEnter(pbodyB);
 
+				if (pbodyB->gameObject != nullptr)
 				pbodyB->gameObject->OnCollisionEnter(pbodyA);
 			}
 		}
@@ -325,6 +326,17 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, float mass)
 //
 //	return pvehicle;
 //}
+
+PhysBody3D* ModulePhysics3D::CreateCube(float x, float y, float z, float mass)
+{
+	Cube cube;
+	cube.size.x = x;
+	cube.size.y = y;
+	cube.size.z = z;
+
+
+	return AddBody(cube, mass);
+}
 
 // ---------------------------------------------------------
 void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB)

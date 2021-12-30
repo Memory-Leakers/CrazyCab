@@ -3,9 +3,9 @@
 #define __MODULEPHYSICS3D_H__
 
 #include "Module.h"
-#include "Globals.h"
 #include "List.h"
 #include "Primitive.h"
+#include "PhysBody3D.h"
 
 #include "External/Bullet/include/btBulletDynamicsCommon.h"
 
@@ -14,7 +14,6 @@
 
 class DebugDrawer;
 class Vehicle;
-struct PhysBody3D;
 struct VehicleInfo;
 
 class ModulePhysics3D : public Module
@@ -34,6 +33,8 @@ public:
 	PhysBody3D* AddBody(const Cube& cube, float mass = 1.0f);
 	PhysBody3D* AddBody(const Cylinder& cylinder, float mass = 1.0f);
 	/*Vehicle* AddVehicle(const VehicleInfo& info);*/
+
+	PhysBody3D* CreateCube(float x, float y, float z, float mass);
 
 	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
 	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);
