@@ -1,5 +1,4 @@
 #ifndef __MODULEPHYSICS3D_H__
-
 #define __MODULEPHYSICS3D_H__
 
 #include "Module.h"

@@ -105,7 +105,9 @@
     <ClCompile Include="SceneGame.cpp">
       <Filter>SourceFiles\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Vehicle.cpp" />
+    <ClCompile Include="Vehicle.cpp">
+      <Filter>SourceFiles\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -174,6 +176,8 @@
     <ClInclude Include="SceneGame.h">
       <Filter>HeaderFiles\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Vehicle.h" />
+    <ClInclude Include="Vehicle.h">
+      <Filter>HeaderFiles\GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

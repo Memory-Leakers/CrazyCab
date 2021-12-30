@@ -2,9 +2,7 @@
 #include "ModuleInput.h"
 #include "Vehicle.h"
 #include "PhysBody3D.h"
-#include "Primitive.h"
 #include "ModuleCamera3D.h"
-#include "GameObject.h"
 
 ModulePhysics3D::ModulePhysics3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -136,12 +134,7 @@ bool ModulePhysics3D::CleanUp()
 	for(int i = world->getNumCollisionObjects() - 1; i >= 0; i--)
 	{
 		btCollisionObject* obj = world->getCollisionObjectArray()[i];
-		//btCollisionShape* shape = obj->getCollisionShape();
-		//btRigidBody* rigBody = (btRigidBody*)obj;
-		//btMotionState* motionState = rigBody->getMotionState();
 		world->removeCollisionObject(obj);
-		//RELEASE(shape);
-		//RELEASE(motionState);
 		RELEASE(obj);
 	}
 

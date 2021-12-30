@@ -2,6 +2,7 @@
 #include "Primitive.h"
 #include "ModulePhysics3D.h"
 #include "PhysBody3D.h"
+#include "ModuleScene.h"
 #include "External/Bullet/include/btBulletDynamicsCommon.h"
 
 Vehicle::Vehicle(std::string name, std::string tag, Application* _app, btRaycastVehicle* vehicle, const VehicleInfo& info) :GameObject(name, tag, _app)
@@ -44,7 +45,6 @@ void Vehicle::Start()
 	float suspensionRestLength = 1.2f;
 
 	// Don't change anything below this line ------------------
-
 	float half_width = info->chassis_size.x * 0.5f;
 	float half_length = info->chassis_size.z * 0.5f;
 
@@ -159,8 +159,6 @@ void Vehicle::Start()
 	_app->physics->bodies.add(pBody);
 
 	_app->physics->world->addVehicle(vehicle);
-
-	int num = vehicle->getNumWheels();
 }
 
 void Vehicle::Update()
