@@ -43,6 +43,9 @@
     <Filter Include="HeaderFiles\Tools">
       <UniqueIdentifier>{be86ef8a-a162-4314-8962-8e3f880c10fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="XML">
+      <UniqueIdentifier>{872f7fcf-bebd-46df-99e8-fe49e3a4a373}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -104,6 +107,12 @@
     </ClCompile>
     <ClCompile Include="SceneGame.cpp">
       <Filter>SourceFiles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="External\PugiXml\src\pugixml.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleMap.cpp">
+      <Filter>SourceFiles\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Vehicle.cpp">
       <Filter>SourceFiles\GameObjects</Filter>
@@ -175,6 +184,12 @@
     </ClInclude>
     <ClInclude Include="SceneGame.h">
       <Filter>HeaderFiles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="External\PugiXml\src\pugixml.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleMap.h">
+      <Filter>HeaderFiles\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Vehicle.h">
       <Filter>HeaderFiles\GameObjects</Filter>

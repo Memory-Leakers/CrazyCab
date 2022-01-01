@@ -12,6 +12,7 @@ class ModuleCamera3D;
 class ModuleScene;
 class ModulePhysics3D;
 class ModuleRenderer3D;
+class ModuleMap;
 
 class Application
 {
@@ -23,6 +24,7 @@ public:
 	ModulePhysics3D* physics = nullptr;
 	ModuleScene* scene = nullptr;
 	ModuleRenderer3D* renderer3D = nullptr;
+	ModuleMap* map = nullptr;
 
 	float fps = 1.0f/60.0f;
 

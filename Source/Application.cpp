@@ -7,6 +7,7 @@
 #include "ModulePhysics3D.h"
 #include "ModuleScene.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleMap.h"
 
 Application::Application()
 {
@@ -17,6 +18,7 @@ Application::Application()
 	scene = new ModuleScene(this, true);
 	physics = new ModulePhysics3D(this, true);
 	renderer3D = new ModuleRenderer3D(this, true);
+	map = new ModuleMap(this, true);
 	
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -29,6 +31,8 @@ Application::Application()
 	AddModule(audio);
 	AddModule(camera);
 	AddModule(physics);
+
+	AddModule(map);
 
 	// Scenes
 	AddModule(scene);
