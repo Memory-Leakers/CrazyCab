@@ -25,6 +25,7 @@ struct VehicleInfo
 
 	vec3 chassis_size;
 	vec3 chassis_offset;
+
 	float mass;
 	float suspensionStiffness; // default to 5.88 / 10.0 offroad / 50.0 sports car / 200.0 F1 car
 	float suspensionCompression; // default to 0.83
@@ -50,6 +51,7 @@ public:
 	void PostUpdate() override;
 	void CleanUp() override;
 
+	vec3 GetObserverPos();
 	void Render();
 	void ApplyEngineForce(float force);
 	void Brake(float force);
@@ -60,6 +62,12 @@ public:
 
 	VehicleInfo* info;
 	btRaycastVehicle* vehicle = nullptr;
+
+private:
+	float turn = 0.0f;
+	float rotateSpeed = 40.0f;
+
+	vec3 ObserverPos = { 0,0,0 };
 };
 
 #endif // !__VEHICLE_H__

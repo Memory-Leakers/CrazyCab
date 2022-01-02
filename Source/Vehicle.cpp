@@ -3,6 +3,7 @@
 #include "ModulePhysics3D.h"
 #include "PhysBody3D.h"
 #include "ModuleScene.h"
+#include "ModuleInput.h"
 #include "External/Bullet/include/btBulletDynamicsCommon.h"
 
 Vehicle::Vehicle(std::string name, std::string tag, Application* _app, btRaycastVehicle* vehicle, const VehicleInfo& info) :GameObject(name, tag, _app)
@@ -26,10 +27,13 @@ VehicleInfo::~VehicleInfo()
 
 void Vehicle::Start()
 {
+	ObserverPos.Set(0, 6, -20);
+
 	info = new VehicleInfo();
 	// Car properties ----------------------------------------
-	info->chassis_size.Set(2, 2, 4);
-	info->chassis_offset.Set(0, 1.5, 0);
+	info->chassis_size.Set(3, 1.2f, 4);
+	info->chassis_offset.Set(0, 0.6f, -0.1f);
+
 	info->mass = 500.0f;
 	info->suspensionStiffness = 15.88f;
 	info->suspensionCompression = 0.83f;
@@ -108,6 +112,7 @@ void Vehicle::Start()
 	btCompoundShape* comShape = new btCompoundShape();
 	_app->physics->shapes.add(comShape);
 
+	// Col
 	btCollisionShape* colShape = new btBoxShape(btVector3(info->chassis_size.x * 0.5f, info->chassis_size.y * 0.5f, info->chassis_size.z * 0.5f));
 	_app->physics->shapes.add(colShape);
 
@@ -116,6 +121,7 @@ void Vehicle::Start()
 	trans.setOrigin(btVector3(info->chassis_offset.x, info->chassis_offset.y, info->chassis_offset.z));
 
 	comShape->addChildShape(trans, colShape);
+	//Col
 
 	btTransform startTransform;
 	startTransform.setIdentity();
@@ -156,6 +162,9 @@ void Vehicle::Start()
 	}
 
 	pBody = new PhysBody3D(body, this);
+
+	pBody->SetPos(-10, 5, -10);
+
 	_app->physics->bodies.add(pBody);
 
 	_app->physics->world->addVehicle(vehicle);
@@ -163,6 +172,60 @@ void Vehicle::Start()
 
 void Vehicle::Update()
 {
+	if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	{
+		ApplyEngineForce(1000);
+	}
+	if(_app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		ApplyEngineForce(-1000);		
+	}
+	if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP || _app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+	{
+		ApplyEngineForce(0);
+	}
+
+
+	if (_app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		if (turn > -45)
+		{
+			turn -= rotateSpeed * _app->fps;
+			Turn(turn * DEGTORAD);
+		}
+	}
+	else if (_app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		if (turn < 45)
+		{
+			turn += rotateSpeed * _app->fps;
+			Turn(turn * DEGTORAD);
+		}
+	}
+	else if(turn != 0.0f)
+	{
+		if (abs(turn) <= _app->fps)
+		{
+			turn = 0.0f;
+		}
+		turn += turn > 0 ? (-rotateSpeed * _app->fps) : (rotateSpeed * _app->fps);
+
+		Turn(turn * DEGTORAD);
+	}
+
+	if (_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
+	{
+		Brake(100);
+		//info->mass = 5000;
+
+		//vehicle.		
+		
+	}
+	else if(_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_UP)
+	{
+		Brake(0);
+		//info->mass = 500;
+	}
 }
 
 void Vehicle::PostUpdate()
@@ -172,6 +235,31 @@ void Vehicle::PostUpdate()
 
 void Vehicle::CleanUp()
 {
+}
+
+vec3 Vehicle::GetObserverPos()
+{
+	vec3 ret;
+
+	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
+
+	Cube tempCube(1,1,1);
+
+	tempCube.transform.M;
+
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&tempCube.transform);
+
+	btVector3 tempPos(ObserverPos.x, ObserverPos.y, ObserverPos.z);
+
+	tempPos = tempPos.rotate(q.getAxis(), q.getAngle());
+
+	tempCube.transform.M[12] += tempPos.getX();
+	tempCube.transform.M[13] += tempPos.getY();
+	tempCube.transform.M[14] += tempPos.getZ();
+	
+	ret.Set(tempCube.transform.M[12], tempCube.transform.M[13], tempCube.transform.M[14]);
+	
+	return ret;
 }
 
 void Vehicle::Render()
@@ -226,6 +314,10 @@ void Vehicle::Brake(float force)
 	}
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="degrees"> THIS IS A RAD!!!!!!!</param>
 void Vehicle::Turn(float degrees)
 {
 	for (int i = 0; i < vehicle->getNumWheels(); ++i)

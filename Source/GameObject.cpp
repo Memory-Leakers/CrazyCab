@@ -86,3 +86,8 @@ bool GameObject::CompareTag(std::string tag)
 
 	return false;
 }
+
+vec3 GameObject::GetPosition() const
+{
+	return pBody->GetPos();
+}

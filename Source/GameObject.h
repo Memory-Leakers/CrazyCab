@@ -41,6 +41,8 @@ public:
 
 	bool CompareTag(std::string tag);
 
+	vec3 GetPosition() const;
+
 private :
 	iPoint position = { 0,0 };
 
