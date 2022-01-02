@@ -86,7 +86,6 @@ public:
 		updateVehicle(step);
 	}
 	
-
 	///btActionInterface interface
 	void	debugDraw(btIDebugDraw* debugDrawer);
 			
@@ -95,7 +94,6 @@ public:
 	btScalar rayCast(btWheelInfo& wheel);
 
 	virtual void updateVehicle(btScalar step);
-	
 	
 	void resetSuspension();
 

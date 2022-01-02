@@ -5,6 +5,8 @@
 #include "Globals.h"
 #include "glmath.h"
 
+class Vehicle;
+
 class ModuleCamera3D : public Module
 {
 public:
@@ -20,6 +22,9 @@ public:
 	void Move(const vec3 &Movement);
 	float* GetViewMatrix();
 
+	void SetTarget(Vehicle* tg, vec3 offset);
+	void RemoveTarget();
+
 private:
 
 	void CalculateViewMatrix();
@@ -31,6 +36,9 @@ public:
 private:
 
 	mat4x4 ViewMatrix, ViewMatrixInverse;
+
+	Vehicle* target = nullptr;
+	vec3 offset;
 };
 
 #endif // !__MODULECAMERA3D_H__

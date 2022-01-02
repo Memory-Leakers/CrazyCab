@@ -50,6 +50,11 @@ bool SceneGame::Start()
 	//gameObjects.add(g);
 	Scene::Start();
 
+	_app->camera->Move(v->GetPosition() + vec3{ 0,5,-15 });
+	_app->camera->LookAt(v->GetPosition());
+
+	_app->camera->SetTarget(v, vec3{ 0,5,-15 });
+
 	return ret;
 }
 
@@ -76,6 +81,8 @@ bool SceneGame::PostUpdate()
 
 bool SceneGame::CleanUp()
 {
+	_app->camera->RemoveTarget();
+
 	Scene::CleanUp();
 
 	return true;

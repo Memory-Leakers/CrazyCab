@@ -50,6 +50,8 @@ public:
 
 	bool CompareTag(Tag tag);
 
+	vec3 GetPosition() const;
+
 private :
 	
 
