@@ -6,11 +6,11 @@
 #include "External/Bullet/include/btBulletDynamicsCommon.h"
 #include <iostream>
 
-Vehicle::Vehicle(std::string name, std::string tag, Application* _app, btRaycastVehicle* vehicle, const VehicleInfo& info) :GameObject(name, tag, _app)
+Vehicle::Vehicle(std::string name, Tag tag, Application* _app, btRaycastVehicle* vehicle, const VehicleInfo& info) :GameObject(name, tag, _app)
 {
 }
 
-Vehicle::Vehicle(std::string name, std::string tag, Application* _app):GameObject(name, tag, _app)
+Vehicle::Vehicle(std::string name, Tag tag, Application* _app):GameObject(name, tag, _app)
 {
 }
 

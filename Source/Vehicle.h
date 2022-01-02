@@ -41,8 +41,8 @@ class Vehicle :  public GameObject
 {
 public:
 
-	Vehicle(std::string name, std::string tag, Application* _app, btRaycastVehicle* vehicle, const VehicleInfo& info);
-	Vehicle(std::string name, std::string tag, Application* _app);
+	Vehicle(std::string name, Tag tag, Application* _app, btRaycastVehicle* vehicle, const VehicleInfo& info);
+	Vehicle(std::string name, Tag tag, Application* _app);
 	~Vehicle() override;
 
 	void Start() override;

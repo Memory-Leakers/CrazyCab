@@ -7,7 +7,7 @@ GameObject::GameObject()
 }
 
 //TODO: Poner Applicationi* en constructor
-GameObject::GameObject(std::string name, std::string tag , Application* _app)
+GameObject::GameObject(std::string name, Tag tag , Application* _app)
 {
 	this->name = name;
 	this->_app = _app;
@@ -77,7 +77,7 @@ void GameObject::CleanUp()
 {
 }
 
-bool GameObject::CompareTag(std::string tag)
+bool GameObject::CompareTag(Tag tag)
 {
 	if(this->tag == tag)
 	{

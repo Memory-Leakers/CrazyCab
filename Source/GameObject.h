@@ -10,13 +10,22 @@
 
 class PhysBody3D;
 
+
+enum class Tag
+{
+	None = 0,
+	Vehicle,
+	TaxiClient,
+	Wall
+};
+
 class GameObject 
 {
 public:
 
 	GameObject();
 
-	GameObject(std::string name = "Default", std::string tag = "None", Application* _app = nullptr);
+	GameObject(std::string name = "Default", Tag tag = Tag::None, Application* _app = nullptr);
 
 	GameObject(GameObject& obj);
 
@@ -39,20 +48,22 @@ public:
 
 	virtual void CleanUp();
 
-	bool CompareTag(std::string tag);
+	bool CompareTag(Tag tag);
 
 private :
-	iPoint position = { 0,0 };
+	
+
+protected:
+	vec3 position = { 0,0,0 };
 
 	float rotation = 0;
 
-protected:
 	Application* _app = nullptr;
 
 public:
 	std::string name = "";
 
-	std::string tag = "";
+	Tag tag = Tag::None;
 
 	PhysBody3D* pBody = nullptr;
 

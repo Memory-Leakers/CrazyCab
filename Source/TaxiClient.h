@@ -3,27 +3,67 @@
 
 #include "GameObject.h"
 
+enum TaxiClientState
+{
+	WaitingTaxi = 0,
+	OnTaxi
+};
+
+
 class TaxiClient : public GameObject
 {
 public:
 
-	TaxiClient();
+	TaxiClient(std::string name, Tag tag, Application* _app);
 	~TaxiClient();
 
 	void Start() override;
+	void PreUpdate() override;
 	void Update() override;
 	void PostUpdate() override;
 	void CleanUp() override;
 
-	void Render();
+	void OnTriggerEnter(PhysBody3D* col) override;
+
+	void generatePosition();
 
 private:
+	float height = 32.0f;
+	float radius = 4.0f;
 
-
+	bool onTaxi = false;
+	
 public:
 
-	iPoint startPos;
-	iPoint endPoint;
+	int serviceCount = 0;
+
+	vec3* originPos = nullptr;
+	vec3* destinationPos = nullptr;
+
+	//PhysBody3D* pBody2 = nullptr;
+
+public:
+	/*GETTERS AND SETTERS*/
+
+	void SetHeight(float height)
+	{
+		this->height = height;
+	}
+
+	float GetHeight()
+	{
+		return height;
+	}
+
+	void SetRadius(float radius)
+	{
+		this->radius = radius;
+	}
+
+	float GetRadius()
+	{
+		return radius;
+	}
 
 };
 
