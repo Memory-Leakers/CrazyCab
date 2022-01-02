@@ -4,6 +4,7 @@
 #include "ModulePhysics3D.h"
 #include "Vehicle.h"
 #include "TaxiClient.h"
+#include "ModuleMap.h"
 
 SceneGame::SceneGame(Application* app) :Scene(app)
 {
@@ -15,6 +16,14 @@ SceneGame::~SceneGame()
 
 bool SceneGame::InitScene()
 {
+	for (int i = 0; i < _app->map->mapObjects.count(); i++)
+	{
+		GameObject* g = new GameObject("wall", "Wall", _app);
+		g->pBody = _app->physics->CreateCube(_app->map->mapObjects[i].dimensions[0], _app->map->mapObjects[i].dimensions[1], _app->map->mapObjects[i].dimensions[2], 9999);
+		g->pBody->SetPos(_app->map->mapObjects[i].position.x, 1, _app->map->mapObjects[i].position.y);
+
+		gameObjects.add(g);
+	}
 	return true;
 }
 
@@ -27,10 +36,9 @@ bool SceneGame::Start()
 
 	_app->camera->Move(vec3(3.0f, 14.0f, 5.0f));
 	_app->camera->LookAt(vec3(0, 0, 0));
+	_app->map->Load("Map.tmx");
 
-	/*GameObject* g = new GameObject("test", "Test", _app);
-	Cube* cube = new Cube(10.0f, 20.0f, 30.0f);
-	g->pBody = _app->physics->AddBody(*cube, 1);*/
+	InitScene();
 
 	//_app->physics->CreateCube(10, 20, 30, 40);
 	_app->physics->CreateArea(4, 6, {10, 0,0});
