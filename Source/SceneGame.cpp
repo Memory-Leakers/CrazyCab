@@ -3,6 +3,7 @@
 #include "ModuleScene.h"
 #include "ModulePhysics3D.h"
 #include "Vehicle.h"
+#include "TaxiClient.h"
 
 SceneGame::SceneGame(Application* app) :Scene(app)
 {
@@ -24,14 +25,15 @@ bool SceneGame::Start()
 
 	this->name = "GameScene";
 
-	_app->camera->Move(vec3(1.0f, 1.0f, 0.0f));
+	_app->camera->Move(vec3(3.0f, 14.0f, 5.0f));
 	_app->camera->LookAt(vec3(0, 0, 0));
 
 	/*GameObject* g = new GameObject("test", "Test", _app);
 	Cube* cube = new Cube(10.0f, 20.0f, 30.0f);
 	g->pBody = _app->physics->AddBody(*cube, 1);*/
 
-	_app->physics->CreateCube(10, 20, 30, 40);
+	//_app->physics->CreateCube(10, 20, 30, 40);
+	_app->physics->CreateArea(4, 6, {10, 0,0});
 
 	Vehicle* v = new Vehicle("vehicle", "Vehicle", _app);
 	gameObjects.add(v);

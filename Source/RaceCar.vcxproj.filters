@@ -108,6 +108,9 @@
     <ClCompile Include="Vehicle.cpp">
       <Filter>SourceFiles\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="TaxiClient.cpp">
+      <Filter>SourceFiles\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -177,6 +180,9 @@
       <Filter>HeaderFiles\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Vehicle.h">
+      <Filter>HeaderFiles\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="TaxiClient.h">
       <Filter>HeaderFiles\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

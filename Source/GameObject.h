@@ -25,7 +25,7 @@ public:
 	virtual void OnCollisionEnter(PhysBody3D* col);
 	//virtual void OnCollisionExit(PhysBody* col);
 
-	//virtual void OnTriggerEnter(PhysBody* trigger, PhysBody* col);
+	virtual void OnTriggerEnter(PhysBody3D* col);
 	//virtual void OnTriggerStay(PhysBody* trigger, PhysBody* col);
 	//virtual void OnTriggerExit(PhysBody* trigger, PhysBody* col);
 

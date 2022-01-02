@@ -3,6 +3,7 @@
 #include "Vehicle.h"
 #include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
+#include <iostream>
 
 ModulePhysics3D::ModulePhysics3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -74,16 +75,22 @@ UpdateStatus ModulePhysics3D::PreUpdate()
 		int numContacts = contactManifold->getNumContacts();
 		if(numContacts > 0)
 		{
-			PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
-			PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
+			PhysBody3D* pBodyA = (PhysBody3D*)obA->getUserPointer();
+			PhysBody3D* pBodyB = (PhysBody3D*)obB->getUserPointer();
 
-			if(pbodyA && pbodyB)
+			if(pBodyA && pBodyB)
 			{
-				if (pbodyA->gameObject != nullptr)
-				pbodyA->gameObject->OnCollisionEnter(pbodyB);
+				if (pBodyA->gameObject != nullptr)
+					pBodyA->gameObject->OnCollisionEnter(pBodyB);
 
-				if (pbodyB->gameObject != nullptr)
-				pbodyB->gameObject->OnCollisionEnter(pbodyA);
+				if (pBodyB->gameObject != nullptr)
+					pBodyB->gameObject->OnCollisionEnter(pBodyA);
+
+				if (pBodyA->gameObject != nullptr && obA->getCollisionFlags() == btCollisionObject::CF_NO_CONTACT_RESPONSE)
+					pBodyA->gameObject->OnTriggerEnter(pBodyB);
+
+				if (pBodyB->gameObject != nullptr && obB->getCollisionFlags() == btCollisionObject::CF_NO_CONTACT_RESPONSE)
+					pBodyB->gameObject->OnTriggerEnter(pBodyA);
 			}
 		}
 	}
@@ -262,6 +269,36 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, float mass)
 }
 
 // ---------------------------------------------------------
+PhysBody3D* ModulePhysics3D::AddTriggerArea(const Cylinder& cylinder, vec3 pos)
+{
+	btCollisionShape* colShape = new btCylinderShapeX(btVector3(cylinder.height * 0.5f, cylinder.radius, 0.0f));
+	shapes.add(colShape);
+
+	btTransform startTransform;
+	startTransform.setFromOpenGLMatrix(&cylinder.transform);
+
+	btVector3 localInertia(0, 0, 0);
+	colShape->calculateLocalInertia(0.f, localInertia);
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	motions.add(myMotionState);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(0.f, myMotionState, colShape, localInertia);
+
+	btRigidBody* body = new btRigidBody(rbInfo);
+
+	body->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE); //Collision without physics callbacks
+	
+	PhysBody3D* pbody = new PhysBody3D(body);
+	pbody->SetPos(pos.x, pos.y, pos.z);
+
+	body->setUserPointer(pbody);
+	world->addRigidBody(body);
+	bodies.add(pbody);
+
+	return pbody;
+}
+
+// ---------------------------------------------------------
 //Vehicle* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 //{
 //	btCompoundShape* comShape = new btCompoundShape();
@@ -329,6 +366,26 @@ PhysBody3D* ModulePhysics3D::CreateCube(float x, float y, float z, float mass)
 
 
 	return AddBody(cube, mass);
+}
+
+PhysBody3D* ModulePhysics3D::CreateCylinder(float radius, float height, float mass)
+{
+	Cylinder cylinder;
+	cylinder.radius = radius;
+	cylinder.height = height;
+	cylinder.SetRotation(90, {0, 0, 1});
+
+	return AddBody(cylinder, mass);
+}
+
+PhysBody3D* ModulePhysics3D::CreateArea(float radius, float height, vec3 pos)
+{
+	Cylinder cylinder;
+	cylinder.radius = radius;
+	cylinder.height = height;
+	cylinder.SetRotation(90, { 0, 0, 1 });
+
+	return AddTriggerArea(cylinder, pos);
 }
 
 // ---------------------------------------------------------

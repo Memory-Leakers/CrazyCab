@@ -4,6 +4,7 @@
 #include "PhysBody3D.h"
 #include "ModuleScene.h"
 #include "External/Bullet/include/btBulletDynamicsCommon.h"
+#include <iostream>
 
 Vehicle::Vehicle(std::string name, std::string tag, Application* _app, btRaycastVehicle* vehicle, const VehicleInfo& info) :GameObject(name, tag, _app)
 {
@@ -163,6 +164,11 @@ void Vehicle::Start()
 
 void Vehicle::Update()
 {
+	if (_app->physics->debug)
+	{
+		vec3 v = pBody->GetPos();
+		//std::cout << pBody->gameObject->name << ": x(" << v.x << ") y(" << v.y << ") z(" << v.z << ")" << std::endl;
+	}
 }
 
 void Vehicle::PostUpdate()

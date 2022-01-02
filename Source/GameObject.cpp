@@ -43,9 +43,9 @@ void GameObject::OnCollisionEnter(PhysBody3D* col)
 //
 //}
 //
-//void GameObject::OnTriggerEnter(PhysBody* trigger, PhysBody* col)
-//{
-//}
+void GameObject::OnTriggerEnter(PhysBody3D* col)
+{
+}
 //
 //void GameObject::OnTriggerStay(PhysBody* trigger, PhysBody* col)
 //{

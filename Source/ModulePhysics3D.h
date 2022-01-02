@@ -31,9 +31,12 @@ public:
 	PhysBody3D* AddBody(const Sphere& sphere, float mass = 1.0f);
 	PhysBody3D* AddBody(const Cube& cube, float mass = 1.0f);
 	PhysBody3D* AddBody(const Cylinder& cylinder, float mass = 1.0f);
+	PhysBody3D* AddTriggerArea(const Cylinder& cylinder, vec3 pos);
 	/*Vehicle* AddVehicle(const VehicleInfo& info);*/
 
 	PhysBody3D* CreateCube(float x, float y, float z, float mass);
+	PhysBody3D* CreateCylinder(float radius, float height, float mass);
+	PhysBody3D* CreateArea(float radius, float height, vec3 pos);
 
 	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
 	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);

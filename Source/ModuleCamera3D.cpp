@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Application.h"
 #include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
@@ -38,6 +39,10 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 UpdateStatus ModuleCamera3D::Update()
 {
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		std::cout << "Cam Pos: x(" << Position.x << ") y(" << Position.y << ") z(" << Position.z << ")" << std::endl;
+	}
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 
