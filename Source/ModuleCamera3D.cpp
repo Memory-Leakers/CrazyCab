@@ -42,28 +42,7 @@ UpdateStatus ModuleCamera3D::Update()
 {
 	if (target != nullptr)
 	{
-		//vec3 lookAt = { 0, 0, 0 };
-		//lookAt = target->GetPosition();
-
-		//target->vehicle
-
-		//lookAt.x += target->vehicle->getForwardVector().getX();
-		//lookAt.z += target->vehicle->getForwardVector().getZ();
-
 		Look(target->GetObserverPos(), target->GetPosition());
-
-		//vec3 lookAt = { 0, 0, 0};
-
-		//lookAt = target->GetPosition();
-
-		//LookAt(target->GetPosition());
-
-		//Move(target->GetPosition() + offset);
-
-		//Vehicle* v = (Vehicle*)target;
-		//float x_value = v->vehicle ->vehicle->getChassisWorldTransform().getOrigin().getX() + 10 * App->player->vehicle->vehicle->getForwardVector().getX();
-		//float z_value = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getZ() + 10 * App->player->vehicle->vehicle->getForwardVector().getZ();
-		//LookAt(target->GetPosition());
 	}
 	else
 	{
