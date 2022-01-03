@@ -327,7 +327,6 @@ PhysBody3D* ModulePhysics3D::CreateCube(float x, float y, float z, float mass)
 	cube.size.y = y;
 	cube.size.z = z;
 
-
 	return AddBody(cube, mass);
 }
 

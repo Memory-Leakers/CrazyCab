@@ -9,6 +9,7 @@
 #define MAX_GAMEOBJECT_TEXTURES 10
 
 class PhysBody3D;
+class Primitive;
 
 class GameObject 
 {
@@ -28,6 +29,8 @@ public:
 	//virtual void OnTriggerEnter(PhysBody* trigger, PhysBody* col);
 	//virtual void OnTriggerStay(PhysBody* trigger, PhysBody* col);
 	//virtual void OnTriggerExit(PhysBody* trigger, PhysBody* col);
+
+	virtual void InitAsCube(float x, float y, float z, float mass);
 
 	virtual void Start();
 
@@ -57,6 +60,8 @@ public:
 	std::string tag = "";
 
 	PhysBody3D* pBody = nullptr;
+
+	Primitive* primitive = nullptr;
 
 	bool pendingToDelete = false;
 

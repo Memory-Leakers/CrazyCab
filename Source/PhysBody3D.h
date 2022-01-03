@@ -32,7 +32,7 @@ public:
 	const vec3 GetAngularVelocity();
 	void SetAngularVelocity(float x, float y, float z);
 
-private:
+public:
 	btRigidBody* body = nullptr;
 
 public:

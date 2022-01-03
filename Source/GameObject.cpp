@@ -55,6 +55,11 @@ void GameObject::OnCollisionEnter(PhysBody3D* col)
 //{
 //}
 
+void GameObject::InitAsCube(float x, float y, float z, float mass)
+{
+	this->primitive = new Cube(x, y, z);
+	this->pBody = _app->physics->CreateCube(x, y, z, mass);
+}
 void GameObject::Start()
 {
 	//Cargar texturas
@@ -70,11 +75,16 @@ void GameObject::Update()
 
 void GameObject::PostUpdate()
 {
-	
+	if (primitive != nullptr)
+	{
+		pBody->body->getCenterOfMassTransform().getOpenGLMatrix(&primitive->transform);
+		primitive->Render();
+	}
 }
 
 void GameObject::CleanUp()
 {
+	RELEASE(primitive);
 }
 
 bool GameObject::CompareTag(std::string tag)
