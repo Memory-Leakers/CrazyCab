@@ -252,8 +252,6 @@ vec3 Vehicle::GetObserverPos()
 
 	Cube tempCube(1,1,1);
 
-	tempCube.transform.M;
-
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&tempCube.transform);
 
 	btVector3 tempPos(ObserverPos.x, ObserverPos.y, ObserverPos.z);
