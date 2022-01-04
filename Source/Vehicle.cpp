@@ -164,6 +164,7 @@ void Vehicle::Start()
 
 	pBody = new PhysBody3D(body, this);
 
+	body->setUserPointer(pBody);
 	pBody->SetPos(-10, 5, -10);
 
 	_app->physics->bodies.add(pBody);

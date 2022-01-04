@@ -26,7 +26,6 @@ public:
 
 	const vec3 GetPos() const;
 	void SetPos(float x, float y, float z);
-	vec3 GetPos();
 
 	const vec3 GetLinearVelocity();
 	void SetLinearVelocity(float x, float y, float z);

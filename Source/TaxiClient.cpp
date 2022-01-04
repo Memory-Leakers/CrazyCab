@@ -15,6 +15,7 @@ void TaxiClient::Start()
 {
 	generatePosition();
 	pBody = _app->physics->CreateArea(radius, height, *originPos);
+	pBody->gameObject = this;
 	//pBody2 = _app->physics->CreateArea(radius, height, *destinationPos);
 }
 
@@ -69,6 +70,7 @@ void TaxiClient::OnTriggerEnter(PhysBody3D* col)
 			generatePosition();
 			onTaxi = false;
 			serviceCount++;
+			std::cout << "Nº" << serviceCount << std::endl;
 		}
 	}
 }

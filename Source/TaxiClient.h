@@ -29,7 +29,7 @@ public:
 
 private:
 	float height = 32.0f;
-	float radius = 4.0f;
+	float radius = 8.0f;
 
 	bool onTaxi = false;
 	

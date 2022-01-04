@@ -86,11 +86,13 @@ UpdateStatus ModulePhysics3D::PreUpdate()
 				if (pBodyB->gameObject != nullptr)
 					pBodyB->gameObject->OnCollisionEnter(pBodyA);
 
-				if (pBodyA->gameObject != nullptr && obA->getCollisionFlags() == btCollisionObject::CF_NO_CONTACT_RESPONSE)
-					pBodyA->gameObject->OnTriggerEnter(pBodyB);
+				if (pBodyA->gameObject != nullptr)
+					if(pBodyA->gameObject->tag == Tag::TaxiClient)
+						pBodyA->gameObject->OnTriggerEnter(pBodyB);
 
-				if (pBodyB->gameObject != nullptr && obB->getCollisionFlags() == btCollisionObject::CF_NO_CONTACT_RESPONSE)
-					pBodyB->gameObject->OnTriggerEnter(pBodyA);
+				if (pBodyB->gameObject != nullptr)
+					if(pBodyB->gameObject->tag == Tag::TaxiClient)
+						pBodyB->gameObject->OnTriggerEnter(pBodyA);
 			}
 		}
 	}
@@ -286,8 +288,9 @@ PhysBody3D* ModulePhysics3D::AddTriggerArea(const Cylinder& cylinder, vec3 pos)
 
 	btRigidBody* body = new btRigidBody(rbInfo);
 
-	body->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE); //Collision without physics callbacks
-	
+	body->setCollisionFlags(btCollisionObject::CO_GHOST_OBJECT); //Collision without physics callbacks
+	//body.setCollision
+
 	PhysBody3D* pbody = new PhysBody3D(body);
 	pbody->SetPos(pos.x, pos.y, pos.z);
 
