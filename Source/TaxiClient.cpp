@@ -53,6 +53,7 @@ void TaxiClient::CleanUp()
 
 void TaxiClient::OnTriggerEnter(PhysBody3D* col)
 {
+	if (col->gameObject == nullptr) return;
 	if (col->gameObject->tag == Tag::Vehicle)
 	{
 		std::cout << "Vehicle entered ClientTaxi Area" << std::endl;
@@ -96,8 +97,8 @@ void TaxiClient::generatePosition()
 
 	RELEASE(originPos);
 	RELEASE(destinationPos);
-	originPos = new vec3({xOrigin, 16.0f, zOrigin});
-	destinationPos = new vec3({ xDestination, 16.0f, zDestination });
+	originPos = new vec3({xOrigin, 32.0f, zOrigin});
+	destinationPos = new vec3({ xDestination, 32.0f, zDestination });
 
 	if (pBody != nullptr)
 	{
