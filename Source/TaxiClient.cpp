@@ -41,7 +41,7 @@ void TaxiClient::PostUpdate()
 	if (_app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		generatePosition();
-		std::cout << "Nº" << serviceCount << std::endl;
+		std::cout << "N? << serviceCount << std::endl";
 	}
 }
 
@@ -71,7 +71,7 @@ void TaxiClient::OnTriggerEnter(PhysBody3D* col)
 			generatePosition();
 			onTaxi = false;
 			serviceCount++;
-			std::cout << "Nº" << serviceCount << std::endl;
+			std::cout << "N? << serviceCount << std::endl";
 		}
 	}
 }
