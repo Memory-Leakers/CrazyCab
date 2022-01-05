@@ -59,13 +59,14 @@ public:
 	float GetKmh() const;
 
 public:
-
-	VehicleInfo* info;
+	VehicleInfo* info = nullptr;
 	btRaycastVehicle* vehicle = nullptr;
 
 private:
 	float turn = 0.0f;
 	float rotateSpeed = 40.0f;
+	float speed = 1000.0f;
+	float acceleration = 0.0f;
 
 	vec3 ObserverPos = { 0,0,0 };
 };

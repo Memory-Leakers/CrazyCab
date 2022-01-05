@@ -17,14 +17,14 @@ SceneGame::~SceneGame()
 bool SceneGame::InitScene()
 {
 	float scale = 16.0f / 9.0f;
-	for (int i = 0; i < _app->map->mapObjects.count(); i++)
-	{
-		GameObject* g = new GameObject("wall", Tag::Wall, _app);
-		g->InitAsCube(_app->map->mapObjects[i].dimensions[0] * scale, _app->map->mapObjects[i].dimensions[1] * 10 * scale, _app->map->mapObjects[i].dimensions[2] * scale, 1);
-		g->pBody->SetPos(_app->map->mapObjects[i].position.x, 1, _app->map->mapObjects[i].position.y);
+	//for (int i = 0; i < _app->map->mapObjects.count(); i++)
+	//{
+	//	GameObject* g = new GameObject("wall", Tag::Wall, _app);
+	//	g->InitAsCube(_app->map->mapObjects[i].dimensions[0] * scale, _app->map->mapObjects[i].dimensions[1] * 10 * scale, _app->map->mapObjects[i].dimensions[2] * scale, 1);
+	//	g->pBody->SetPos(_app->map->mapObjects[i].position.x, 1, _app->map->mapObjects[i].position.y);
 
-		gameObjects.add(g);
-	}
+	//	gameObjects.add(g);
+	//}
 	return true;
 }
 
@@ -75,6 +75,10 @@ bool SceneGame::Update()
 
 bool SceneGame::PostUpdate()
 {
+	Plane p(0, 1, 0, 0);
+	p.axis = true;
+	p.Render();
+
 	Scene::PostUpdate();
 
 	return true;

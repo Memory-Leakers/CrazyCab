@@ -181,11 +181,11 @@ void Vehicle::Update()
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
-		ApplyEngineForce(1000);
+		ApplyEngineForce(speed + acceleration);
 	}
 	if(_app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
-		ApplyEngineForce(-1000);
+		ApplyEngineForce(-speed + acceleration);
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP || _app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
 	{
@@ -195,7 +195,7 @@ void Vehicle::Update()
 
 	if (_app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		if (turn > -45)
+		if (turn > -15)
 		{
 			turn -= rotateSpeed * _app->fps;
 			Turn(turn * DEGTORAD);
@@ -203,7 +203,7 @@ void Vehicle::Update()
 	}
 	else if (_app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		if (turn < 45)
+		if (turn < 15)
 		{
 			turn += rotateSpeed * _app->fps;
 			Turn(turn * DEGTORAD);
@@ -220,13 +220,21 @@ void Vehicle::Update()
 		Turn(turn * DEGTORAD);
 	}
 
+	if(_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	{
+		acceleration = 1000.0f;
+	}
+	else if (_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP)
+	{
+		acceleration = 0.0f;
+	}
+
 	if (_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 	{
-		Brake(100);
+		Brake(GetKmh()*2);
 		//info->mass = 5000;
 
 		//vehicle.
-
 	}
 	else if(_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_UP)
 	{

@@ -110,12 +110,6 @@ UpdateStatus ModulePhysics3D::Update()
 	{
 		world->debugDrawWorld();
 
-		// Render vehicles
-		/*for (int i = 0, count = vehicles.count(); i < count; i++)
-		{
-			vehicles[i]->Render();
-		}*/
-
 		if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 		{
 			Sphere s(1);
