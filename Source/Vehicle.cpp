@@ -138,6 +138,7 @@ void Vehicle::Start()
 	btRigidBody* body = new btRigidBody(rbInfo);
 	body->setContactProcessingThreshold(BT_LARGE_FLOAT);
 	body->setActivationState(DISABLE_DEACTIVATION);
+	body->setAngularFactor(btVector3(0, 1, 0));
 
 	_app->physics->world->addRigidBody(body);
 
