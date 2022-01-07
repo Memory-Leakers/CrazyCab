@@ -41,7 +41,6 @@ struct VehicleInfo
 class Vehicle :  public GameObject
 {
 public:
-
 	Vehicle(std::string name, Tag tag, Application* _app, btRaycastVehicle* vehicle, const VehicleInfo& info);
 	Vehicle(std::string name, Tag tag, Application* _app);
 	~Vehicle() override;
@@ -64,7 +63,7 @@ public:
 
 private:
 	float turn = 0.0f;
-	float rotateSpeed = 40.0f;
+	float rotateSpeed = 10.0f;
 	float speed = 1000.0f;
 	float acceleration = 0.0f;
 

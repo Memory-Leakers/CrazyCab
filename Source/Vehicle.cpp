@@ -175,28 +175,26 @@ void Vehicle::Start()
 
 void Vehicle::Update()
 {
-	if (_app->physics->debug)
-	{
-		vec3 v = pBody->GetPos();
-		//std::cout << pBody->gameObject->name << ": x(" << v.x << ") y(" << v.y << ") z(" << v.z << ")" << std::endl;
-	}
+	// Go ahead
 	if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
 		ApplyEngineForce(speed + acceleration);
 	}
+	// Back
 	if(_app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
 		ApplyEngineForce(-speed + acceleration);
 	}
+	// Stop add force
 	if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP || _app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
 	{
 		ApplyEngineForce(0);
 	}
 
-
+	// Rotate
 	if (_app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		if (turn > -15)
+		if (turn > -65 * DEGTORAD)
 		{
 			turn -= rotateSpeed * _app->fps;
 			Turn(turn * DEGTORAD);
@@ -204,7 +202,7 @@ void Vehicle::Update()
 	}
 	else if (_app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		if (turn < 15)
+		if (turn < 65 * DEGTORAD)
 		{
 			turn += rotateSpeed * _app->fps;
 			Turn(turn * DEGTORAD);
@@ -221,6 +219,7 @@ void Vehicle::Update()
 		Turn(turn * DEGTORAD);
 	}
 
+	// Accelerate
 	if(_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		acceleration = 1000.0f;
@@ -230,9 +229,11 @@ void Vehicle::Update()
 		acceleration = 0.0f;
 	}
 
+	// Brake
 	if (_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 	{
-		Brake(GetKmh()*2);
+		Brake(GetKmh()/4);
+		rotateSpeed = 300.0f;
 		//info->mass = 5000;
 
 		//vehicle.
@@ -240,6 +241,7 @@ void Vehicle::Update()
 	else if(_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_UP)
 	{
 		Brake(0);
+		rotateSpeed = 10.0f;
 		//info->mass = 500;
 	}
 }
