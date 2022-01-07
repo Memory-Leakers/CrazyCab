@@ -17,14 +17,16 @@ SceneGame::~SceneGame()
 bool SceneGame::InitScene()
 {
 	float scale = 16.0f / 9.0f;
-	//for (int i = 0; i < _app->map->mapObjects.count(); i++)
-	//{
-	//	GameObject* g = new GameObject("wall", Tag::Wall, _app);
-	//	g->InitAsCube(_app->map->mapObjects[i].dimensions[0] * scale, _app->map->mapObjects[i].dimensions[1] * 10 * scale, _app->map->mapObjects[i].dimensions[2] * scale, 1);
-	//	g->pBody->SetPos(_app->map->mapObjects[i].position.x, 1, _app->map->mapObjects[i].position.y);
+	for (int i = 0; i < _app->map->mapObjects.count(); i++)
+	{
+		GameObject* g = new GameObject("wall", Tag::Wall, _app);
+		g->InitAsCube(_app->map->mapObjects[i].dimensions[0] * scale * 9, _app->map->mapObjects[i].dimensions[1] * (rand() %40) + 10 * scale, _app->map->mapObjects[i].dimensions[2] * scale * 9 , 99999);
+		g->pBody->SetPos(_app->map->mapObjects[i].position.x + ((_app->map->mapObjects[i].dimensions[0] / 2) * 16), 1, _app->map->mapObjects[i].position.y + ((_app->map->mapObjects[i].dimensions[2] / 2)*16));
+		Color wallColors[4] = { Color(1,1,1,1), Color(0.5f, 0.5f, 0.5f, 1), Color(0.4f, 0.4f, 0.4f, 1), Color(0.6f, 0.6f, 0.6f, 1) };
+		g->primitive->color = wallColors[rand() % 4];
 
-	//	gameObjects.add(g);
-	//}
+		gameObjects.add(g);
+	}
 	return true;
 }
 
