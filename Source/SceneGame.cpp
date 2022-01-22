@@ -5,6 +5,7 @@
 #include "Vehicle.h"
 #include "TaxiClient.h"
 #include "ModuleMap.h"
+#include "Arrow.h"
 
 SceneGame::SceneGame(Application* app) :Scene(app)
 {
@@ -52,6 +53,9 @@ bool SceneGame::Start()
 	gameObjects.add(t);
 	//gameObjects.add(g);
 	Scene::Start();
+
+	Arrow* arrowTest = new Arrow("testarrow", Tag::None, _app, v, t);
+	gameObjects.add(arrowTest);
 
 	_app->camera->Move(v->GetPosition() + vec3{ 0,5,-15 });
 	_app->camera->LookAt(v->GetPosition());
