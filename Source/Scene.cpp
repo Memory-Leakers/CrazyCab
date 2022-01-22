@@ -97,6 +97,11 @@ bool Scene::CleanUp()
 	return true;
 }
 
+void Scene::AddGameObject(GameObject* g)
+{
+	gameObjects.add(g);
+}
+
 void Scene::DestroyGameObject(GameObject* gameObject)
 {
 	int index = gameObjects.find(gameObject);

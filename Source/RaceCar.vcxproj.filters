@@ -120,6 +120,7 @@
     <ClCompile Include="TaxiClient.cpp">
       <Filter>SourceFiles\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Smoke.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -200,5 +201,6 @@
     <ClInclude Include="TaxiClient.h">
       <Filter>HeaderFiles\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Smoke.h" />
   </ItemGroup>
 </Project>

@@ -39,6 +39,8 @@ public:
 
 	virtual bool CleanUp();
 
+	void AddGameObject(GameObject* g);
+
 	void DestroyGameObject(GameObject* gameObject);
 
 	int getID()

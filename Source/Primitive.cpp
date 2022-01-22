@@ -52,7 +52,9 @@ void Primitive::Render() const
 		glLineWidth(1.0f);
 	}
 
-	glColor3f(color.r, color.g, color.b);
+	//glColor3f(color.r, color.g, color.b);
+
+	glColor4f(color.r, color.g, color.b, color.a);
 
 	if(wire)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -71,7 +73,7 @@ void Primitive::InnerRender() const
 
 	glBegin(GL_POINTS);
 
-	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex4f(0.0f, 0.0f, 0.0f,1.0f);
 
 	glEnd();
 

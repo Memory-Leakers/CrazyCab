@@ -175,6 +175,7 @@
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="Smoke.cpp" />
     <ClCompile Include="TaxiClient.cpp" />
     <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
@@ -202,6 +203,7 @@
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="Smoke.h" />
     <ClInclude Include="TaxiClient.h" />
     <ClInclude Include="Timer.hpp" />
     <ClInclude Include="Vehicle.h" />

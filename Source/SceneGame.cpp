@@ -78,6 +78,7 @@ bool SceneGame::Update()
 bool SceneGame::PostUpdate()
 {
 	Plane p(0, 1, 0, 0);
+	p.color = White;
 	p.axis = true;
 	p.Render();
 

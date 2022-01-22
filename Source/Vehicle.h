@@ -4,6 +4,7 @@
 #include "GameObject.h"
 
 class btRaycastVehicle;
+class Smoke;
 
 struct Wheel
 {
@@ -25,6 +26,9 @@ struct VehicleInfo
 
 	vec3 chassis_size;
 	vec3 chassis_offset;
+
+	vec3 test1_offset;
+	vec3 test1_size;
 
 	float mass;
 	float suspensionStiffness; // default to 5.88 / 10.0 offroad / 50.0 sports car / 200.0 F1 car
@@ -62,13 +66,15 @@ public:
 	btRaycastVehicle* vehicle = nullptr;
 
 private:
-	float turn = 0.0f;
+	float turn = 3.0f;
 	float rotateSpeed = 5.0f;
 	float speed = 1000.0f;
 	float acceleration = 0.0f;
 	float maxVelocity = 180.0f;
 
 	vec3 ObserverPos = { 0,0,0 };
+
+	float smokeStep = 0.1f;
 
 private:
 	void UpdateRotateSpeed();
