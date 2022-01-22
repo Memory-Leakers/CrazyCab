@@ -63,11 +63,15 @@ public:
 
 private:
 	float turn = 0.0f;
-	float rotateSpeed = 10.0f;
+	float rotateSpeed = 5.0f;
 	float speed = 1000.0f;
 	float acceleration = 0.0f;
+	float maxVelocity = 180.0f;
 
 	vec3 ObserverPos = { 0,0,0 };
+
+private:
+	void UpdateRotateSpeed();
 };
 
 #endif // !__VEHICLE_H__

@@ -104,7 +104,7 @@ void ModuleMap::LoadLayerMeta()
 						{
 							// We add the dimensions for this iteration instead of creating another object
 							mapObjects[j].dimensions[i] = (gid - tileset->firstgid) + 1;
-							printf("I:%d\tGID:%d\n", i, mapObjects[j].dimensions[i]);
+							//printf("I:%d\tGID:%d\n", i, mapObjects[j].dimensions[i]);
 							hasIterated = true;
 							break;
 						}
@@ -114,7 +114,7 @@ void ModuleMap::LoadLayerMeta()
 					{
 						obj.dimensions[i] = (gid - tileset->firstgid) + 1;
 						mapObjects.add(obj);
-						printf("I:%d\tGID:%d\n", i, obj.dimensions[i]);
+						//printf("I:%d\tGID:%d\n", i, obj.dimensions[i]);
 					}
 				}
 			}

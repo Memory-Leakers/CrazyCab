@@ -35,12 +35,12 @@ void Vehicle::Start()
 	info->chassis_size.Set(3, 1.2f, 4);
 	info->chassis_offset.Set(0, 0.6f, -0.1f);
 
-	info->mass = 500.0f;
+	info->mass = 1000.0f;
 	info->suspensionStiffness = 15.88f;
 	info->suspensionCompression = 0.83f;
 	info->suspensionDamping = 0.88f;
 	info->maxSuspensionTravelCm = 1000.0f;
-	info->frictionSlip = 50.5;
+	info->frictionSlip = 5000.5f;
 	info->maxSuspensionForce = 6000.0f;
 
 	// Wheel properties ---------------------------------------
@@ -107,13 +107,10 @@ void Vehicle::Start()
 	info->wheels[3].brake = true;
 	info->wheels[3].steering = false;
 
-	/*vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(0, 12, 10);*/
-
 	btCompoundShape* comShape = new btCompoundShape();
 	_app->physics->shapes.add(comShape);
 
-	// Col
+	// Collision shape
 	btCollisionShape* colShape = new btBoxShape(btVector3(info->chassis_size.x * 0.5f, info->chassis_size.y * 0.5f, info->chassis_size.z * 0.5f));
 	_app->physics->shapes.add(colShape);
 
@@ -122,7 +119,7 @@ void Vehicle::Start()
 	trans.setOrigin(btVector3(info->chassis_offset.x, info->chassis_offset.y, info->chassis_offset.z));
 
 	comShape->addChildShape(trans, colShape);
-	//Col
+	// Collision shape
 
 	btTransform startTransform;
 	startTransform.setIdentity();
@@ -140,10 +137,13 @@ void Vehicle::Start()
 	body->setActivationState(DISABLE_DEACTIVATION);
 	body->setAngularFactor(btVector3(0, 1, 0));
 
+	body->setFriction(1000);
+	body->setRestitution(5000);
+
 	_app->physics->world->addRigidBody(body);
 
 	btRaycastVehicle::btVehicleTuning tuning;
-	tuning.m_frictionSlip = info->frictionSlip;
+	tuning.m_frictionSlip = 1000;
 	tuning.m_maxSuspensionForce = info->maxSuspensionForce;
 	tuning.m_maxSuspensionTravelCm = info->maxSuspensionTravelCm;
 	tuning.m_suspensionCompression = info->suspensionCompression;
@@ -160,7 +160,7 @@ void Vehicle::Start()
 		btVector3 dir(info->wheels[i].direction.x, info->wheels[i].direction.y, info->wheels[i].direction.z);
 		btVector3 axis(info->wheels[i].axis.x, info->wheels[i].axis.y, info->wheels[i].axis.z);
 
-		vehicle->addWheel(conn, dir, axis, info->wheels[i].suspensionRestLength, info->wheels[i].radius, tuning, info->wheels[i].front);
+		vehicle->addWheel(conn, dir, axis, info->wheels[i].suspensionRestLength, info->wheels[i].radius, tuning, info->wheels[i].front);	
 	}
 
 	pBody = new PhysBody3D(body, this);
@@ -175,15 +175,31 @@ void Vehicle::Start()
 
 void Vehicle::Update()
 {
+	vehicle->updateVehicle(_app->fps);
+
 	// Go ahead
 	if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
-		ApplyEngineForce(speed + acceleration);
+		if (GetKmh() < maxVelocity)
+		{
+			ApplyEngineForce(speed + acceleration);
+		}
+		else
+		{
+			ApplyEngineForce(0);
+		}
 	}
 	// Back
 	if(_app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
-		ApplyEngineForce(-speed + acceleration);
+		if (GetKmh() > -maxVelocity)
+		{
+			ApplyEngineForce(-speed);
+		}		
+		else
+		{
+			ApplyEngineForce(0);
+		}
 	}
 	// Stop add force
 	if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP || _app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
@@ -194,54 +210,56 @@ void Vehicle::Update()
 	// Rotate
 	if (_app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		if (turn > -65 * DEGTORAD)
-		{
-			turn -= rotateSpeed * _app->fps;
-			Turn(turn * DEGTORAD);
-		}
+		// Calculate rotation
+		turn -= rotateSpeed * _app->fps;
+
+		// Limit of rotation
+		turn = turn < -15 ? -15 : turn;
+
+		// Apply rotation
+		Turn(turn * DEGTORAD);
 	}
 	else if (_app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	{
-		if (turn < 65 * DEGTORAD)
-		{
-			turn += rotateSpeed * _app->fps;
-			Turn(turn * DEGTORAD);
-		}
+	{		
+		// Calculate rotation
+		turn += rotateSpeed * _app->fps;
+
+		// Limit of rotation
+		turn = turn > 15 ? 15 : turn;
+
+		// Apply rotation
+		Turn(turn * DEGTORAD);
 	}
 	else if(turn != 0.0f)
 	{
-		if (abs(turn) <= _app->fps)
-		{
-			turn = 0.0f;
-		}
-		turn += turn > 0 ? (-rotateSpeed * _app->fps) : (rotateSpeed * _app->fps);
-
-		Turn(turn * DEGTORAD);
+		// Reset rotation
+		turn = 0;
+		Turn(0);
 	}
 
 	// Accelerate
 	if(_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
-		acceleration = 1000.0f;
+		acceleration = 4000.0f;
+		maxVelocity = 240.0f;
 	}
 	else if (_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP)
 	{
 		acceleration = 0.0f;
+		maxVelocity = 180.0f;
 	}
 
 	// Brake
 	if (_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 	{
-		Brake(GetKmh()/4);
-		rotateSpeed = 300.0f;
+		Brake(100);
+		//rotateSpeed = 200.0f;
 		//info->mass = 5000;
-
-		//vehicle.
 	}
 	else if(_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_UP)
 	{
 		Brake(0);
-		rotateSpeed = 10.0f;
+		//rotateSpeed = 30.0f;
 		//info->mass = 500;
 	}
 }
@@ -282,7 +300,7 @@ void Vehicle::Render()
 {
 	Cylinder wheel;
 
-	wheel.color = Blue;
+	wheel.color = Black;
 
 	for (int i = 0; i < vehicle->getNumWheels(); ++i)
 	{
@@ -348,4 +366,22 @@ void Vehicle::Turn(float degrees)
 float Vehicle::GetKmh() const
 {
 	return vehicle->getCurrentSpeedKmHour();
+}
+
+void Vehicle::UpdateRotateSpeed()
+{
+	int currentSpeed = GetKmh();
+
+	if (currentSpeed < 50)
+	{
+		rotateSpeed = 200.0f;
+	}
+	else if (currentSpeed < 100)
+	{
+		rotateSpeed = 30.0f;
+	}
+	else if (currentSpeed < 140)
+	{
+		rotateSpeed = 5.0f;
+	}
 }
