@@ -28,6 +28,11 @@ VehicleInfo::~VehicleInfo()
 
 void Vehicle::Start()
 {
+	// Shapes
+	pipe.color = Red;
+	pipe.radius = 0.5f;
+	pipe.height = 2;
+
 	ObserverPos.Set(0, 6, -20);
 
 	info = new VehicleInfo();
@@ -35,16 +40,12 @@ void Vehicle::Start()
 	info->chassis_size.Set(3, 1.2f, 4);
 	info->chassis_offset.Set(0, 0.6f, -0.1f);
 
-	/*info->test1_size.Set(1, 1, 1);
-	info->test1_offset.Set(5, 2.5f, 8.5f);
-	*/
-
 	info->mass = 1000.0f;
 	info->suspensionStiffness = 15.88f;
 	info->suspensionCompression = 0.83f;
 	info->suspensionDamping = 0.88f;
 	info->maxSuspensionTravelCm = 1000.0f;
-	info->frictionSlip = 5000.5f;
+	info->frictionSlip = 8.5f;
 	info->maxSuspensionForce = 6000.0f;
 
 	// Wheel properties ---------------------------------------
@@ -125,17 +126,6 @@ void Vehicle::Start()
 	comShape->addChildShape(trans, colShape);
 	// Collision shape
 
-	/*
-	btCollisionShape* colShape2 = new btBoxShape(btVector3(info->test1_size.x * 0.5f, info->test1_size.y * 0.5f, info->test1_size.z * 0.5f));
-	_app->physics->shapes.add(colShape2);
-
-	btTransform trans2;
-	trans2.setIdentity();
-	trans2.setOrigin(btVector3(info->test1_offset.x, info->test1_offset.y, info->test1_offset.z));
-
-	comShape->addChildShape(trans2, colShape2);
-	*/
-
 	btTransform startTransform;
 	startTransform.setIdentity();
 
@@ -152,8 +142,9 @@ void Vehicle::Start()
 	body->setActivationState(DISABLE_DEACTIVATION);
 	body->setAngularFactor(btVector3(0, 1, 0));
 
-	body->setFriction(1000);
-	body->setRestitution(5000);
+	// No funciona
+	body->setFriction(0.8f);
+	body->setRestitution(1.0f);
 
 	_app->physics->world->addRigidBody(body);
 
@@ -181,7 +172,7 @@ void Vehicle::Start()
 	pBody = new PhysBody3D(body, this);
 
 	body->setUserPointer(pBody);
-	pBody->SetPos(100, 5, 100);
+	pBody->SetPos(150, 5, 180);
 
 	_app->physics->bodies.add(pBody);
 
@@ -190,14 +181,16 @@ void Vehicle::Start()
 
 void Vehicle::Update()
 {
-	UpdateRotateSpeed();
+	UpdateRotateLimit();
 
 	vehicle->updateVehicle(_app->fps);
+
+	smokeStep -= _app->fps;
 
 	// Brake
 	if (_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 	{
-		Brake(100);
+		Brake(150);
 
 		turn = 5.0f;
 
@@ -221,13 +214,70 @@ void Vehicle::Update()
 
 			Smoke* s = new Smoke(_app, r, pos);
 
-			smokeStep = 0.1f;
+			smokeStep = 0.05;
 		}
 	}
 	else if (_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_UP)
 	{
 		Brake(0);
 		turn = 3.0f;
+	}
+	// Accelerate
+	else if (_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	{
+		acceleration = 4000.0f;
+		maxVelocity = 240.0f;
+
+		if (smokeStep <= 0);
+		{
+			// Calculate pos & rot
+			mat4x4 tempMatrix;
+
+			vehicle->getChassisWorldTransform().getOpenGLMatrix(&tempMatrix);
+			btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
+			btVector3 offset(1, 0, -3);
+			offset = offset.rotate(q.getAxis(), q.getAngle());
+
+			tempMatrix.M[12] += offset.getX();
+			tempMatrix.M[13] += offset.getY();
+			tempMatrix.M[14] += offset.getZ();
+
+			vec3 pos = vec3(tempMatrix.M[12], tempMatrix.M[13], tempMatrix.M[14]);
+
+			//
+			mat4x4 tempMatrix2;
+
+			vehicle->getChassisWorldTransform().getOpenGLMatrix(&tempMatrix2);
+			btQuaternion q2 = vehicle->getChassisWorldTransform().getRotation();
+			btVector3 offset2(-1, 0, -3);
+			offset2 = offset2.rotate(q2.getAxis(), q2.getAngle());
+
+			tempMatrix2.M[12] += offset2.getX();
+			tempMatrix2.M[13] += offset2.getY();
+			tempMatrix2.M[14] += offset2.getZ();
+
+			vec3 pos2 = vec3(tempMatrix2.M[12], tempMatrix2.M[13], tempMatrix2.M[14]);
+			//
+
+			float r = ((rand() % 10) + 5) / 10;
+
+			int randColor = rand() % 2;
+
+			Color color = Color(1.0f, 0.0f, 0.0f);
+
+			color.g = ((float)(rand() % 100) + 1) / 100.0f;
+
+			Smoke* s = new Smoke(_app, r, pos, color);
+
+			Smoke* s2 = new Smoke(_app, r, pos2, color);
+
+			smokeStep = 0.1f;
+		}
+	}
+	else if (_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP)
+	{
+		acceleration = 0.0f;
+		maxVelocity = 180.0f;
 	}
 
 	// Go ahead
@@ -276,77 +326,25 @@ void Vehicle::Update()
 		// Reset rotation
 		Turn(0);
 	}
-
-	// Accelerate
-	if(_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-	{
-		acceleration = 4000.0f;
-		maxVelocity = 240.0f;
-
-		if (smokeStep <= 0);
-		{
-			// Calculate pos & rot
-			mat4x4 tempMatrix;
-
-			vehicle->getChassisWorldTransform().getOpenGLMatrix(&tempMatrix);
-			btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
-			btVector3 offset(1, 0, -3);
-			offset = offset.rotate(q.getAxis(), q.getAngle());
-
-			tempMatrix.M[12] += offset.getX();
-			tempMatrix.M[13] += offset.getY();
-			tempMatrix.M[14] += offset.getZ();
-
-			vec3 pos = vec3(tempMatrix.M[12], tempMatrix.M[13], tempMatrix.M[14]);
-
-			//
-			mat4x4 tempMatrix2;
-
-			vehicle->getChassisWorldTransform().getOpenGLMatrix(&tempMatrix2);
-			btQuaternion q2 = vehicle->getChassisWorldTransform().getRotation();
-			btVector3 offset2(-1, 0, -3);
-			offset2 = offset2.rotate(q2.getAxis(), q2.getAngle());
-
-			tempMatrix2.M[12] += offset2.getX();
-			tempMatrix2.M[13] += offset2.getY();
-			tempMatrix2.M[14] += offset2.getZ();
-
-			vec3 pos2 = vec3(tempMatrix2.M[12], tempMatrix2.M[13], tempMatrix2.M[14]);
-			//
-
-			float r = ((rand() % 10) + 5) / 10;
-
-			int randColor = rand() % 2;
-
-			Color color = Color(1.0f, 0.0f, 0.0f);
-
-			color.g = ((float)(rand() % 100) + 1) / 100.0f;
-
-			Smoke* s = new Smoke(_app, r, pos, color);
-
-			Smoke* s2 = new Smoke(_app, r, pos2, color);
-	
-			smokeStep = 0.1f;
-		}
-	}
-	else if (_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP)
-	{
-		acceleration = 0.0f;
-		maxVelocity = 180.0f;
-	}
-
-	smokeStep -= _app->fps;
 }
 
 void Vehicle::PostUpdate()
 {
 	Render();
 
-	vec3 pos = GetPosition();
-	pos.z -= 3;
-	vehicle->getChassisWorldTransform().getRotation();
-	
-	//pipe.SetPos(pos.x, pos.y, pos.z);
+	//vec3 pos = GetPosition();
+	//pos.z -= 3;
+
+	//vehicle->getChassisWorldTransform().getOpenGLMatrix(&pipe.transform);
+	//btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
+	//btVector3 offset(0, 0, -3);
+	//offset = offset.rotate(q.getAxis(), q.getAngle());
+
+	//pipe.transform.M[12] += offset.getX();
+	//pipe.transform.M[13] += offset.getY();
+	//pipe.transform.M[14] += offset.getZ();
+
+	//pipe.SetRotation(90, { 0,1,0 });
 
 	//pipe.Render();
 }
@@ -361,19 +359,19 @@ vec3 Vehicle::GetObserverPos()
 
 	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
 
-	Cube tempCube(1,1,1);
+	mat4x4 tempTransform;
 
-	vehicle->getChassisWorldTransform().getOpenGLMatrix(&tempCube.transform);
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&tempTransform);
 
 	btVector3 tempPos(ObserverPos.x, ObserverPos.y, ObserverPos.z);
 
 	tempPos = tempPos.rotate(q.getAxis(), q.getAngle());
 
-	tempCube.transform.M[12] += tempPos.getX();
-	tempCube.transform.M[13] += tempPos.getY();
-	tempCube.transform.M[14] += tempPos.getZ();
+	tempTransform.M[12] += tempPos.getX();
+	tempTransform.M[13] += tempPos.getY();
+	tempTransform.M[14] += tempPos.getZ();
 
-	ret.Set(tempCube.transform.M[12], tempCube.transform.M[13], tempCube.transform.M[14]);
+	ret.Set(tempTransform.M[12], tempTransform.M[13], tempTransform.M[14]);
 
 	return ret;
 }
@@ -406,20 +404,6 @@ void Vehicle::Render()
 	chassis.transform.M[14] += offset.getZ();
 
 	chassis.Render();
-
-	/*
-	Cube chassis2(info->test1_size.x, info->test1_size.y, info->test1_size.z);
-	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis2.transform);
-	btQuaternion q2 = vehicle->getChassisWorldTransform().getRotation();
-	btVector3 offset2(info->test1_offset.x, info->test1_offset.y, info->test1_offset.z);
-	offset2 = offset2.rotate(q2.getAxis(), q2.getAngle());
-
-	chassis2.transform.M[12] += offset2.getX();
-	chassis2.transform.M[13] += offset2.getY();
-	chassis2.transform.M[14] += offset2.getZ();
-
-	chassis2.Render();
-	*/
 }
 
 void Vehicle::ApplyEngineForce(float force)
@@ -464,7 +448,7 @@ float Vehicle::GetKmh() const
 	return vehicle->getCurrentSpeedKmHour();
 }
 
-void Vehicle::UpdateRotateSpeed()
+void Vehicle::UpdateRotateLimit()
 {
 	int currentSpeed = GetKmh();
 
@@ -472,7 +456,7 @@ void Vehicle::UpdateRotateSpeed()
 	{
 		turn = 15;
 	}
-	else if (abs(currentSpeed) < 100)
+	else if (abs(currentSpeed) < 75)
 	{
 		turn = 3;
 	}
@@ -480,6 +464,4 @@ void Vehicle::UpdateRotateSpeed()
 	{
 		turn = 2.0f;
 	}
-
-	printf("%f\n", turn);
 }

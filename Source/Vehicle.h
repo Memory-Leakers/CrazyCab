@@ -2,6 +2,7 @@
 #define __VEHICLE_H__
 
 #include "GameObject.h"
+#include "Primitive.h"
 
 class btRaycastVehicle;
 class Smoke;
@@ -76,8 +77,10 @@ private:
 
 	float smokeStep = 0.1f;
 
+	Cylinder pipe;
+
 private:
-	void UpdateRotateSpeed();
+	void UpdateRotateLimit();
 };
 
 #endif // !__VEHICLE_H__
