@@ -56,7 +56,7 @@ bool ModulePhysics3D::Start()
 
 	btRigidBody* body = new btRigidBody(rbInfo);
 
-	body->setFriction(1000);
+	body->setFriction(1);
 
 	world->addRigidBody(body);
 	

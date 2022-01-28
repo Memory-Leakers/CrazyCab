@@ -144,7 +144,7 @@ void Vehicle::Start()
 
 	// No funciona
 	body->setFriction(0.8f);
-	body->setRestitution(1.0f);
+	body->setRestitution(0.6f);
 
 	_app->physics->world->addRigidBody(body);
 
@@ -332,21 +332,24 @@ void Vehicle::PostUpdate()
 {
 	Render();
 
-	//vec3 pos = GetPosition();
-	//pos.z -= 3;
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&pipe.transform);
 
-	//vehicle->getChassisWorldTransform().getOpenGLMatrix(&pipe.transform);
-	//btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
-	//btVector3 offset(0, 0, -3);
-	//offset = offset.rotate(q.getAxis(), q.getAngle());
+	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
+	
+	btVector3 offset(0, 0, -3);
+	offset = offset.rotate(q.getAxis(), q.getAngle());
 
-	//pipe.transform.M[12] += offset.getX();
-	//pipe.transform.M[13] += offset.getY();
-	//pipe.transform.M[14] += offset.getZ();
+	pipe.transform.M[12] += offset.getX();
+	pipe.transform.M[13] += offset.getY();
+	pipe.transform.M[14] += offset.getZ();
 
-	//pipe.SetRotation(90, { 0,1,0 });
+	//printf("X:%f\nY:%f\nZ:%f\n------------------\n",tempVec.getX(), tempVec.getY(), tempVec.getZ());
 
-	//pipe.Render();
+	printf("Angle:%f\n", q.getAngle());
+
+	pipe.SetRotation(q.getAngle()*RADTODEG+90, { q.getAxis().getX(), q.getAxis().getY(), q.getAxis().getZ() });
+
+	pipe.Render();
 }
 
 void Vehicle::CleanUp()
