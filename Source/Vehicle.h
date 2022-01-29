@@ -3,6 +3,7 @@
 
 #include "GameObject.h"
 #include "Primitive.h"
+#include "External/Bullet/include/btBulletDynamicsCommon.h"
 
 class btRaycastVehicle;
 class Smoke;
@@ -77,10 +78,16 @@ private:
 
 	float smokeStep = 0.1f;
 
-	Cylinder pipe;
+	// Shapes
+	Cylinder pipe_L;
+	Cylinder pipe_R;
 
 private:
+	void InitShapes();
+
 	void UpdateRotateLimit();
+
+	void OrientWithCar(mat4x4& transform, btVector3 offset, float angle = 0);
 };
 
 #endif // !__VEHICLE_H__

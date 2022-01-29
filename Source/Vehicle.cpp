@@ -4,7 +4,6 @@
 #include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "Smoke.h"
-#include "External/Bullet/include/btBulletDynamicsCommon.h"
 #include <iostream>
 
 Vehicle::Vehicle(std::string name, Tag tag, Application* _app, btRaycastVehicle* vehicle, const VehicleInfo& info) :GameObject(name, tag, _app)
@@ -29,10 +28,9 @@ VehicleInfo::~VehicleInfo()
 void Vehicle::Start()
 {
 	// Shapes
-	pipe.color = Red;
-	pipe.radius = 0.5f;
-	pipe.height = 2;
+	InitShapes();
 
+	// Camera relative pos
 	ObserverPos.Set(0, 6, -20);
 
 	info = new VehicleInfo();
@@ -197,22 +195,21 @@ void Vehicle::Update()
 		if (smokeStep <= 0)
 		{
 			// Calculate pos & rot
+			// smoke 2
 			mat4x4 tempMatrix;
-
-			vehicle->getChassisWorldTransform().getOpenGLMatrix(&tempMatrix);
-			btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
-			btVector3 offset(0, 0, -3);
-			offset = offset.rotate(q.getAxis(), q.getAngle());
-
-			tempMatrix.M[12] += offset.getX();
-			tempMatrix.M[13] += offset.getY();
-			tempMatrix.M[14] += offset.getZ();
-
+			OrientWithCar(tempMatrix, {-1,0,-3.2f});
 			vec3 pos = vec3(tempMatrix.M[12], tempMatrix.M[13], tempMatrix.M[14]);
 
-			float r = ((rand() % 10) + 5) / 10;
+			// smoke 1
+			mat4x4 tempMatrix2;
+			OrientWithCar(tempMatrix2, { 1,0,-3.2f });
+			vec3 pos2 = vec3(tempMatrix2.M[12], tempMatrix2.M[13], tempMatrix2.M[14]);
 
-			Smoke* s = new Smoke(_app, r, pos);
+			float lifeTime = ((rand() % 10) + 5) / 10;
+
+			new Smoke(_app, lifeTime, pos);
+
+			new Smoke(_app, lifeTime, pos2);
 
 			smokeStep = 0.05;
 		}
@@ -231,35 +228,18 @@ void Vehicle::Update()
 		if (smokeStep <= 0);
 		{
 			// Calculate pos & rot
+			// fire 1 pos
 			mat4x4 tempMatrix;
-
-			vehicle->getChassisWorldTransform().getOpenGLMatrix(&tempMatrix);
-			btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
-			btVector3 offset(1, 0, -3);
-			offset = offset.rotate(q.getAxis(), q.getAngle());
-
-			tempMatrix.M[12] += offset.getX();
-			tempMatrix.M[13] += offset.getY();
-			tempMatrix.M[14] += offset.getZ();
-
+			OrientWithCar(tempMatrix, { 1, 0, -3 });
 			vec3 pos = vec3(tempMatrix.M[12], tempMatrix.M[13], tempMatrix.M[14]);
 
-			//
+			// fire 2 pos
 			mat4x4 tempMatrix2;
-
-			vehicle->getChassisWorldTransform().getOpenGLMatrix(&tempMatrix2);
-			btQuaternion q2 = vehicle->getChassisWorldTransform().getRotation();
-			btVector3 offset2(-1, 0, -3);
-			offset2 = offset2.rotate(q2.getAxis(), q2.getAngle());
-
-			tempMatrix2.M[12] += offset2.getX();
-			tempMatrix2.M[13] += offset2.getY();
-			tempMatrix2.M[14] += offset2.getZ();
-
+			OrientWithCar(tempMatrix2, { -1, 0, -3 });
 			vec3 pos2 = vec3(tempMatrix2.M[12], tempMatrix2.M[13], tempMatrix2.M[14]);
-			//
-
-			float r = ((rand() % 10) + 5) / 10;
+			
+			// Create fires
+			float lifeTime = ((rand() % 10) + 5) / 10;
 
 			int randColor = rand() % 2;
 
@@ -267,9 +247,9 @@ void Vehicle::Update()
 
 			color.g = ((float)(rand() % 100) + 1) / 100.0f;
 
-			Smoke* s = new Smoke(_app, r, pos, color);
+			new Smoke(_app, lifeTime, pos, color);
 
-			Smoke* s2 = new Smoke(_app, r, pos2, color);
+			new Smoke(_app, lifeTime, pos2, color);
 
 			smokeStep = 0.1f;
 		}
@@ -332,24 +312,12 @@ void Vehicle::PostUpdate()
 {
 	Render();
 
-	vehicle->getChassisWorldTransform().getOpenGLMatrix(&pipe.transform);
+	// Shape Orientacion
+	OrientWithCar(pipe_L.transform, { .9f , 0, -2.0f }, 90);
+	pipe_L.Render();
 
-	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
-	
-	btVector3 offset(0, 0, -3);
-	offset = offset.rotate(q.getAxis(), q.getAngle());
-
-	pipe.transform.M[12] += offset.getX();
-	pipe.transform.M[13] += offset.getY();
-	pipe.transform.M[14] += offset.getZ();
-
-	//printf("X:%f\nY:%f\nZ:%f\n------------------\n",tempVec.getX(), tempVec.getY(), tempVec.getZ());
-
-	printf("Angle:%f\n", q.getAngle());
-
-	pipe.SetRotation(q.getAngle()*RADTODEG+90, { q.getAxis().getX(), q.getAxis().getY(), q.getAxis().getZ() });
-
-	pipe.Render();
+	OrientWithCar(pipe_R.transform, { -.9f , 0, -2.0f }, 90);
+	pipe_R.Render();
 }
 
 void Vehicle::CleanUp()
@@ -360,19 +328,11 @@ vec3 Vehicle::GetObserverPos()
 {
 	vec3 ret;
 
-	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
-
 	mat4x4 tempTransform;
 
-	vehicle->getChassisWorldTransform().getOpenGLMatrix(&tempTransform);
+	btVector3 tempOffset(ObserverPos.x, ObserverPos.y, ObserverPos.z);
 
-	btVector3 tempPos(ObserverPos.x, ObserverPos.y, ObserverPos.z);
-
-	tempPos = tempPos.rotate(q.getAxis(), q.getAngle());
-
-	tempTransform.M[12] += tempPos.getX();
-	tempTransform.M[13] += tempPos.getY();
-	tempTransform.M[14] += tempPos.getZ();
+	OrientWithCar(tempTransform, tempOffset);
 
 	ret.Set(tempTransform.M[12], tempTransform.M[13], tempTransform.M[14]);
 
@@ -397,6 +357,7 @@ void Vehicle::Render()
 	}
 
 	Cube chassis(info->chassis_size.x, info->chassis_size.y, info->chassis_size.z);
+	chassis.color = Red;
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis.transform);
 	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset(info->chassis_offset.x, info->chassis_offset.y, info->chassis_offset.z);
@@ -451,6 +412,18 @@ float Vehicle::GetKmh() const
 	return vehicle->getCurrentSpeedKmHour();
 }
 
+void Vehicle::InitShapes()
+{
+	// Pipes
+	pipe_L.color = Yellow;
+	pipe_L.radius = 0.2f;
+	pipe_L.height = 1.5f;
+
+	pipe_R.color = Yellow;
+	pipe_R.radius = 0.2f;
+	pipe_R.height = 1.5f;
+}
+
 void Vehicle::UpdateRotateLimit()
 {
 	int currentSpeed = GetKmh();
@@ -467,4 +440,33 @@ void Vehicle::UpdateRotateLimit()
 	{
 		turn = 2.0f;
 	}
+}
+
+/// <summary>
+/// Orientation with car
+/// </summary>
+/// <param name="transform">transform that write the result</param>
+/// <param name="offset">relative position from car&thisObejct</param>
+/// <param name="angle">angle in axis Y, because the car just rot in this axis</param>
+void Vehicle::OrientWithCar(mat4x4& transform, btVector3 offset, float angle)
+{
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&transform);
+
+	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
+
+	offset = offset.rotate(q.getAxis(), q.getAngle());
+
+	transform.M[12] += offset.getX();
+	transform.M[13] += offset.getY();
+	transform.M[14] += offset.getZ();
+
+	// If want rotation
+	if(angle != 0)
+	{
+		float tempAngle = q.getAngle() * RADTODEG;
+
+		if (tempAngle < 0.15f) transform.rotate(angle, { 0, 1, 0 });
+
+		else transform.rotate((tempAngle)+angle, { q.getAxis().getX(), q.getAxis().getY(), q.getAxis().getZ() });
+	}	
 }
