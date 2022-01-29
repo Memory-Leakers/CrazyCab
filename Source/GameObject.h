@@ -16,7 +16,8 @@ enum class Tag
 	None = 0,
 	Vehicle,
 	TaxiClient,
-	Wall
+	Wall,
+	Booster
 };
 
 class GameObject 

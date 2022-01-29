@@ -298,6 +298,35 @@ PhysBody3D* ModulePhysics3D::AddTriggerArea(const Cylinder& cylinder, vec3 pos)
 	return pbody;
 }
 
+PhysBody3D* ModulePhysics3D::AddTriggerCube(const Cube& cube, vec3 pos)
+{
+	btCollisionShape* colShape = new btBoxShape(btVector3(cube.size.x * 0.5f, cube.size.y * 0.5f, cube.size.z * 0.5f));
+	shapes.add(colShape);
+
+	btTransform startTransform;
+	startTransform.setFromOpenGLMatrix(&cube.transform);
+
+	btVector3 localInertia(0, 0, 0);
+	colShape->calculateLocalInertia(0.f, localInertia);
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	motions.add(myMotionState);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(0.f, myMotionState, colShape, localInertia);
+
+	btRigidBody* body = new btRigidBody(rbInfo);
+
+	body->setCollisionFlags(btCollisionObject::CO_GHOST_OBJECT); //Collision without physics callbacks
+	//body.setCollision
+
+	PhysBody3D* pbody = new PhysBody3D(body);
+	pbody->SetPos(pos.x, pos.y, pos.z);
+
+	body->setUserPointer(pbody);
+	world->addRigidBody(body);
+	bodies.add(pbody);
+
+	return pbody;
+}
 // ---------------------------------------------------------
 //Vehicle* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 //{
@@ -377,7 +406,7 @@ PhysBody3D* ModulePhysics3D::CreateCylinder(float radius, float height, float ma
 	return AddBody(cylinder, mass);
 }
 
-PhysBody3D* ModulePhysics3D::CreateArea(float radius, float height, vec3 pos)
+PhysBody3D* ModulePhysics3D::CreateCylinderArea(float radius, float height, vec3 pos)
 {
 	Cylinder cylinder;
 	cylinder.radius = radius;
@@ -385,6 +414,16 @@ PhysBody3D* ModulePhysics3D::CreateArea(float radius, float height, vec3 pos)
 	cylinder.SetRotation(90, { 0, 0, 1 });
 
 	return AddTriggerArea(cylinder, pos);
+}
+
+PhysBody3D* ModulePhysics3D::CreateCubeArea(float x, float y, float z, vec3 pos)
+{
+	Cube cube;
+	cube.size.x = x;
+	cube.size.y = y;
+	cube.size.z = z;
+
+	return AddTriggerCube(cube, pos);
 }
 
 // ---------------------------------------------------------

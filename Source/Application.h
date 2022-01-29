@@ -27,9 +27,10 @@ public:
 	ModuleMap* map = nullptr;
 
 	float fps = 1.0f/60.0f;
+	Timer	timer;
 
 private:
-	Timer	timer;
+	
 	float	dt = 0;
 	List<Module*> list_modules;
 

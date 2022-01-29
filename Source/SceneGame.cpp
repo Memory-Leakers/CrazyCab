@@ -6,6 +6,8 @@
 #include "TaxiClient.h"
 #include "ModuleMap.h"
 #include "Arrow.h"
+#include "Booster.h"
+
 
 SceneGame::SceneGame(Application* app) :Scene(app)
 {
@@ -21,7 +23,7 @@ bool SceneGame::InitScene()
 	for (int i = 0; i < _app->map->mapObjects.count(); i++)
 	{
 		GameObject* g = new GameObject("wall", Tag::Wall, _app);
-		g->InitAsCube(_app->map->mapObjects[i].dimensions[0] * scale * 9, _app->map->mapObjects[i].dimensions[1] * (rand() %40) + 10 * scale, _app->map->mapObjects[i].dimensions[2] * scale * 9 , 99999);
+		g->InitAsCube(_app->map->mapObjects[i].dimensions[0] * scale * 9, _app->map->mapObjects[i].dimensions[1] * (rand() %40) + 80 * scale, _app->map->mapObjects[i].dimensions[2] * scale * 9 , 99999);
 		g->pBody->SetPos(_app->map->mapObjects[i].position.x + ((_app->map->mapObjects[i].dimensions[0] / 2) * 16), 1, _app->map->mapObjects[i].position.y + ((_app->map->mapObjects[i].dimensions[2] / 2)*16));
 		g->pBody->body->setRestitution(0.4f);
 		Color wallColors[4] = { Color(1,1,1,1), Color(0.5f, 0.5f, 0.5f, 1), Color(0.4f, 0.4f, 0.4f, 1), Color(0.6f, 0.6f, 0.6f, 1) };
@@ -57,6 +59,19 @@ bool SceneGame::Start()
 
 	Arrow* arrowTest = new Arrow("testarrow", Tag::None, _app, v, t);
 	gameObjects.add(arrowTest);
+
+	Booster* boosterTest = new Booster("booster", Tag::Booster, _app,  vec3(27, 1, 300), vec3(45, 4, 20), true);
+	gameObjects.add(boosterTest);
+	Booster* boosterTest2 = new Booster("booster", Tag::Booster, _app, vec3(517, 1, 690), vec3(20, 4, 70), true);
+	gameObjects.add(boosterTest2);
+	Booster* boosterTest3 = new Booster("booster", Tag::Booster, _app, vec3(639, 1, 45), vec3(20, 4, 60), true);
+	gameObjects.add(boosterTest3);
+	Booster* boosterTest4 = new Booster("booster", Tag::Booster, _app, vec3(517, 1, 940), vec3(20, 4, 70), true);
+	gameObjects.add(boosterTest4);
+	Booster* boosterTest5 = new Booster("booster", Tag::Booster, _app, vec3(610, 1, 190), vec3(20, 4, 90), true);
+	gameObjects.add(boosterTest5);
+	Booster* boosterTest6 = new Booster("booster", Tag::Booster, _app, vec3(517, 1, 820), vec3(20, 4, 70), true);
+	gameObjects.add(boosterTest6);
 
 	_app->camera->Move(v->GetPosition() + vec3{ 0,5,-15 });
 	_app->camera->LookAt(v->GetPosition());

@@ -56,12 +56,16 @@ public:
 	void PostUpdate() override;
 	void CleanUp() override;
 
+	void OnCollisionEnter(PhysBody3D* col) override;
+
 	vec3 GetObserverPos();
 	void Render();
 	void ApplyEngineForce(float force);
 	void Brake(float force);
 	void Turn(float degrees);
 	float GetKmh() const;
+
+	bool boostOn = false;
 
 public:
 	VehicleInfo* info = nullptr;
@@ -73,6 +77,13 @@ private:
 	float speed = 1000.0f;
 	float acceleration = 0.0f;
 	float maxVelocity = 180.0f;
+	float nitroVelocity = 240.0f;
+	float boostVelocity = 400.0f;
+
+	float currentVelocity = maxVelocity;
+
+	float boostCoolDown = 1.2f;
+	float boostCounter = boostCoolDown;
 
 	float frictionCoheficien = 0.1f;
 

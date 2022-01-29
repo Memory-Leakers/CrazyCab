@@ -8,8 +8,9 @@ Arrow::Arrow(std::string name, Tag tag, Application* app, GameObject* base, Taxi
 	this->base = base;
 	this->target = target;
 
-	primitives[0] = new Cylinder(0.5f, 3);
-	primitives[1] = new Sphere(0.8f);
+	primitives[0] = new Cylinder(0.3f, 3);
+	primitives[1] = new Sphere(0.5f);
+	primitives[1]->color = { 1,0,0,1 };
 
 }
 
@@ -22,9 +23,9 @@ void Arrow::Update()
 
 	float rotation = atan2f(direction.x, direction.z);
 
-	primitives[0]->SetPos(basePos.x, basePos.y+2, basePos.z);
+	primitives[0]->SetPos(basePos.x, basePos.y+3, basePos.z);
 	primitives[0]->SetRotation(rotation * RADTODEG + 90, { 0, 1, 0 });
-	primitives[1]->SetPos(basePos.x + direction.x * 2, basePos.y+2, basePos.z + direction.z * 2);
+	primitives[1]->SetPos(basePos.x + direction.x * 2, basePos.y+3, basePos.z + direction.z * 2);
 }
 
 void Arrow::PostUpdate()

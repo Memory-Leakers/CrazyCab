@@ -185,10 +185,18 @@ void Vehicle::Update()
 	smokeStep -= _app->fps;
 	weelPrintStep -= _app->fps;
 
+	// Update countdown
+	if (boostCounter > 0.0f) boostCounter -= _app->timer.getDeltaTime();
+	else
+	{
+		boostOn = false;
+		acceleration = 0;
+	}
 	// Brake
 	if (_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 	{
-		Brake(150);
+		if (!boostOn)Brake(150);
+		else Brake(350);
 
 		turn = 5.0f;
 
@@ -222,8 +230,8 @@ void Vehicle::Update()
 	// Accelerate
 	else if (_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
-		acceleration = 4000.0f;
-		maxVelocity = 240.0f;
+		if (!boostOn) acceleration = 4000.0f;
+		currentVelocity = nitroVelocity;
 
 		if (smokeStep <= 0);
 		{
@@ -256,14 +264,20 @@ void Vehicle::Update()
 	}
 	else if (_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP)
 	{
-		acceleration = 0.0f;
-		maxVelocity = 180.0f;
+		if (!boostOn) acceleration = 0.0f;
+		currentVelocity = maxVelocity;
+	}
+	
+	if (boostOn && boostCounter > 0.0f)
+	{
+		acceleration = 6000;
+		currentVelocity = boostVelocity;
 	}
 
 	// Go ahead
 	if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
-		if (GetKmh() < maxVelocity)
+		if (GetKmh() < currentVelocity)
 		{
 			ApplyEngineForce(speed + acceleration);
 		}
@@ -275,7 +289,7 @@ void Vehicle::Update()
 	// Back
 	if(_app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
-		if (GetKmh() > -maxVelocity)
+		if (GetKmh() > -currentVelocity)
 		{
 			ApplyEngineForce(-speed);
 		}		
@@ -335,6 +349,8 @@ void Vehicle::PostUpdate()
 {
 	Render();
 
+	printf("x: %f, y:%f z: %f\n", GetPosition().x, GetPosition().y, GetPosition().z);
+
 	// Shape Orientacion
 	OrientWithCar(pipe_L.transform, { .9f , 0, -2.0f }, 90);
 	pipe_L.Render();
@@ -350,6 +366,18 @@ void Vehicle::PostUpdate()
 
 void Vehicle::CleanUp()
 {
+}
+
+void Vehicle::OnCollisionEnter(PhysBody3D* col)
+{
+	if (col->gameObject == nullptr) return;
+
+	if (col->gameObject->tag == Tag::Booster)
+	{
+		boostCounter = boostCoolDown;
+		boostOn = true;
+		ApplyEngineForce(7000);
+	}
 }
 
 vec3 Vehicle::GetObserverPos()
@@ -385,7 +413,10 @@ void Vehicle::Render()
 	}
 
 	Cube chassis(info->chassis_size.x, info->chassis_size.y, info->chassis_size.z);
-	chassis.color = Red;
+	
+	if (boostOn) chassis.color = Color(1, 0.5, 0);
+	else chassis.color = Red;
+
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis.transform);
 	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset(info->chassis_offset.x, info->chassis_offset.y, info->chassis_offset.z);

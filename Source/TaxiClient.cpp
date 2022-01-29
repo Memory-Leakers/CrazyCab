@@ -14,7 +14,7 @@ TaxiClient::~TaxiClient()
 void TaxiClient::Start()
 {
 	generatePosition();
-	pBody = _app->physics->CreateArea(radius, height, *originPos);
+	pBody = _app->physics->CreateCylinderArea(radius, height, *originPos);
 	pBody->gameObject = this;
 	//pBody2 = _app->physics->CreateArea(radius, height, *destinationPos);
 }

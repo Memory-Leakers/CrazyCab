@@ -82,6 +82,9 @@
     <ClCompile Include="WeelPrint.cpp">
       <Filter>Source\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Booster.cpp">
+      <Filter>Source\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h">
@@ -169,6 +172,9 @@
       <Filter>Header\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="WeelPrint.h">
+      <Filter>Header\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Booster.h">
       <Filter>Header\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
