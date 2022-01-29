@@ -179,6 +179,7 @@
     <ClCompile Include="Smoke.cpp" />
     <ClCompile Include="TaxiClient.cpp" />
     <ClCompile Include="Vehicle.cpp" />
+    <ClCompile Include="WeelPrint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="TaxiClient.h" />
     <ClInclude Include="Timer.hpp" />
     <ClInclude Include="Vehicle.h" />
+    <ClInclude Include="WeelPrint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

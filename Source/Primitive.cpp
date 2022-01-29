@@ -49,7 +49,7 @@ void Primitive::Render() const
 
 		glEnd();
 
-		glLineWidth(1.0f);
+		glLineWidth(5.0f);
 	}
 
 	//glColor3f(color.r, color.g, color.b);

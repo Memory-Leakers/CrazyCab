@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "Smoke.h"
+#include "WeelPrint.h"
 #include <iostream>
 
 Vehicle::Vehicle(std::string name, Tag tag, Application* _app, btRaycastVehicle* vehicle, const VehicleInfo& info) :GameObject(name, tag, _app)
@@ -140,8 +141,6 @@ void Vehicle::Start()
 	body->setActivationState(DISABLE_DEACTIVATION);
 	body->setAngularFactor(btVector3(0, 1, 0));
 
-	// No funciona
-	body->setFriction(0.8f);
 	body->setRestitution(0.8f);
 
 	_app->physics->world->addRigidBody(body);
@@ -184,6 +183,7 @@ void Vehicle::Update()
 	vehicle->updateVehicle(_app->fps);
 
 	smokeStep -= _app->fps;
+	weelPrintStep -= _app->fps;
 
 	// Brake
 	if (_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
@@ -195,12 +195,12 @@ void Vehicle::Update()
 		if (smokeStep <= 0)
 		{
 			// Calculate pos & rot
-			// smoke 2
+			// smoke 1
 			mat4x4 tempMatrix;
 			OrientWithCar(tempMatrix, {-1,0,-3.2f});
 			vec3 pos = vec3(tempMatrix.M[12], tempMatrix.M[13], tempMatrix.M[14]);
 
-			// smoke 1
+			// smoke 2
 			mat4x4 tempMatrix2;
 			OrientWithCar(tempMatrix2, { 1,0,-3.2f });
 			vec3 pos2 = vec3(tempMatrix2.M[12], tempMatrix2.M[13], tempMatrix2.M[14]);
@@ -288,6 +288,9 @@ void Vehicle::Update()
 	if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP || _app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
 	{
 		ApplyEngineForce(0);
+
+		// Fake friction
+		Brake(GetKmh()* frictionCoheficien);
 	}
 
 	// Rotate
@@ -306,6 +309,26 @@ void Vehicle::Update()
 		// Reset rotation
 		Turn(0);
 	}
+
+	// WeelPrint
+	if (GetKmh() > 50 && weelPrintStep <= 0)
+	{
+		// weelPrint 1
+		mat4x4 tempMatrix;
+		OrientWithCar(tempMatrix, { -1.2f, -0.4f,-3.2f });
+		vec3 pos = vec3(tempMatrix.M[12], tempMatrix.M[13], tempMatrix.M[14]);
+
+		// weelPrint 2
+		mat4x4 tempMatrix2;
+		OrientWithCar(tempMatrix2, { 1.2f, -0.4f,-3.2f });
+		vec3 pos2 = vec3(tempMatrix2.M[12], tempMatrix2.M[13], tempMatrix2.M[14]);
+
+		new WeelPrint(_app, 5, tempMatrix, Red);
+
+		new WeelPrint(_app, 5, tempMatrix2, Red);
+
+		weelPrintStep = 0.15;
+	}
 }
 
 void Vehicle::PostUpdate()
@@ -318,6 +341,11 @@ void Vehicle::PostUpdate()
 
 	OrientWithCar(pipe_R.transform, { -.9f , 0, -2.0f }, 90);
 	pipe_R.Render();
+
+	// Fake plane
+	OrientWithCar(ground.transform, {0 , 1, 0 });
+	ground.SetPos(ground.transform.M[12], -0.5f, ground.transform.M[14]);
+	ground.Render();
 }
 
 void Vehicle::CleanUp()
@@ -422,6 +450,10 @@ void Vehicle::InitShapes()
 	pipe_R.color = Yellow;
 	pipe_R.radius = 0.2f;
 	pipe_R.height = 1.5f;
+
+	// Fake Ground
+	ground.color = Ground;
+	ground.size = { 2000, 0.1, 2000};
 }
 
 void Vehicle::UpdateRotateLimit()

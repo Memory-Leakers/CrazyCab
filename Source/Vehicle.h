@@ -74,13 +74,19 @@ private:
 	float acceleration = 0.0f;
 	float maxVelocity = 180.0f;
 
+	float frictionCoheficien = 0.1f;
+
 	vec3 ObserverPos = { 0,0,0 };
 
 	float smokeStep = 0.1f;
+	float weelPrintStep = 0.2f;
 
 	// Shapes
 	Cylinder pipe_L;
 	Cylinder pipe_R;
+
+	// Fake Ground!!!
+	Cube ground;
 
 private:
 	void InitShapes();
