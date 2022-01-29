@@ -19,6 +19,13 @@ void Arrow::Update()
 	vec3 basePos = base->GetPosition();
 
 	vec3 direction = *target->originPos - basePos;
+	if (target->onTaxi)
+	{
+		direction = *target->destinationPos - basePos;
+	}
+
+
+	
 	direction = normalize(direction);
 
 	float rotation = atan2f(direction.x, direction.z);

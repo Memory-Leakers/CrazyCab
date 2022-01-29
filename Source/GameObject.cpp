@@ -59,6 +59,7 @@ void GameObject::InitAsCube(float x, float y, float z, float mass)
 {
 	this->primitive = new Cube(x, y, z);
 	this->pBody = _app->physics->CreateCube(x, y, z, mass);
+	this->pBody->gameObject = this;
 }
 void GameObject::Start()
 {

@@ -16,7 +16,9 @@ void TaxiClient::Start()
 	generatePosition();
 	pBody = _app->physics->CreateCylinderArea(radius, height, *originPos);
 	pBody->gameObject = this;
-	//pBody2 = _app->physics->CreateArea(radius, height, *destinationPos);
+	pBody2 = _app->physics->CreateArea(radius, height, *destinationPos);
+	pBody2->gameObject = this;
+	this->primitive = new Cylinder(radius, height);
 }
 
 void TaxiClient::PreUpdate()
@@ -43,12 +45,19 @@ void TaxiClient::PostUpdate()
 		generatePosition();
 		std::cout << "N? << serviceCount << std::endl";
 	}
+
+	if (primitive != nullptr)
+	{
+		pBody->body->getCenterOfMassTransform().getOpenGLMatrix(&primitive->transform);
+		primitive->Render();
+	}
 }
 
 void TaxiClient::CleanUp()
 {
 	RELEASE(originPos);
 	RELEASE(destinationPos);
+	RELEASE(primitive);
 }
 
 void TaxiClient::OnTriggerEnter(PhysBody3D* col)
@@ -71,28 +80,33 @@ void TaxiClient::OnTriggerEnter(PhysBody3D* col)
 			generatePosition();
 			onTaxi = false;
 			serviceCount++;
-			std::cout << "N? << serviceCount << std::endl";
+			std::cout << "N?" << serviceCount << std::endl;
 		}
+	}
+	if (col->gameObject->tag == Tag::Wall) {
+		generatePosition();
+		onTaxi = false;
+		std::cout << "NOPE" << std::endl;
 	}
 }
 
 void TaxiClient::generatePosition()
 {
 	float xOrigin, zOrigin, xDestination, zDestination, distance;
-	xOrigin = rand() % 500 + 1;
-	zOrigin = rand() % 500 + 1;
-	xDestination = rand() % 500 + 1;
-	zDestination = rand() % 500 + 1;
+	xOrigin = rand() % 800 + 1;
+	zOrigin = rand() % 800 + 1;
+	xDestination = rand() % 800 + 1;
+	zDestination = rand() % 800 + 1;
 
 	distance = abs(sqrt(xOrigin * xOrigin + zOrigin * zOrigin) - sqrt(xDestination * xDestination + zDestination * zDestination));
 
-	while (distance < 100) //Prevents the destination from being to close to the origin
-	{
-		xDestination = rand() % 400 + 1;
-		zDestination = rand() % 400 + 1;
+	//while (distance < 200) //Prevents the destination from being to close to the origin
+	//{
+	//	xDestination = rand() % 800 + 1;
+	//	zDestination = rand() % 800 + 1;
 
-		distance = abs(sqrt(xOrigin * xOrigin + zOrigin * zOrigin) - sqrt(xDestination * xDestination + zDestination * zDestination));
-	}
+	//	distance = abs(sqrt(xOrigin * xOrigin + zOrigin * zOrigin) - sqrt(xDestination * xDestination + zDestination * zDestination));
+	//}
 
 
 	RELEASE(originPos);
@@ -107,9 +121,9 @@ void TaxiClient::generatePosition()
 		std::cout << "Destination: x(" << destinationPos->x << ") y(" << destinationPos->y << ") z(" << destinationPos->z << ")" << std::endl;
 	}
 
-	/*if (pBody2 != nullptr)
+	if (pBody2 != nullptr)
 	{
 		pBody2->SetPos(destinationPos->x, destinationPos->y, destinationPos->z);
 		std::cout << "Destination: x(" << destinationPos->x << ") y(" << destinationPos->y << ") z(" << destinationPos->z << ")" << std::endl;
-	}*/
+	}
 }
