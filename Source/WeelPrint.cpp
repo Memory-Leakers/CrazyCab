@@ -8,7 +8,7 @@ WeelPrint::WeelPrint(Application* _app, float lifeTime, mat4x4 transform, Color 
 
 	shape.color = color;
 
-	shape.size = {0.5, 0.1, 1.5};
+	shape.size = {0.5, 0.1, 2};
 
 	shape.transform = transform;
 

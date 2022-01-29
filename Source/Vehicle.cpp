@@ -32,7 +32,11 @@ void Vehicle::Start()
 	InitShapes();
 
 	// Camera relative pos
-	ObserverPos.Set(0, 6, -20);
+	btVector3 v = { 0, 6, -20 };
+	v.normalize();
+	observerPos.Set(v.x(), v.y(), v.z());
+	observerDistance = 21;
+	//printf("X:%f\t Y:%f\t Z:%f\t", v.x(), v.y(), v.z());
 
 	info = new VehicleInfo();
 	// Car properties ----------------------------------------
@@ -178,8 +182,6 @@ void Vehicle::Start()
 
 void Vehicle::Update()
 {
-	UpdateRotateLimit();
-
 	vehicle->updateVehicle(_app->fps);
 
 	smokeStep -= _app->fps;
@@ -223,7 +225,7 @@ void Vehicle::Update()
 	else if (_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		acceleration = 4000.0f;
-		maxVelocity = 240.0f;
+		maxVelocity = maxAccelerationVelocity;
 
 		if (smokeStep <= 0);
 		{
@@ -263,26 +265,16 @@ void Vehicle::Update()
 	// Go ahead
 	if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
-		if (GetKmh() < maxVelocity)
-		{
-			ApplyEngineForce(speed + acceleration);
-		}
-		else
-		{
-			ApplyEngineForce(0);
-		}
+		Brake(0);
+		if (GetKmh() < maxVelocity) ApplyEngineForce(speed + acceleration);	
+		else ApplyEngineForce(-speed);
 	}
 	// Back
 	if(_app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
-		if (GetKmh() > -maxVelocity)
-		{
-			ApplyEngineForce(-speed);
-		}		
-		else
-		{
-			ApplyEngineForce(0);
-		}
+		Brake(0);
+		if (GetKmh() > -maxVelocity) ApplyEngineForce(-speed);			
+		else ApplyEngineForce(speed);
 	}
 	// Stop add force
 	if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_UP || _app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
@@ -329,6 +321,10 @@ void Vehicle::Update()
 
 		weelPrintStep = 0.15;
 	}
+
+	// Limits
+	UpdateRotateLimit();
+	UpdateObserverDistance();
 }
 
 void Vehicle::PostUpdate()
@@ -336,10 +332,10 @@ void Vehicle::PostUpdate()
 	Render();
 
 	// Shape Orientacion
-	OrientWithCar(pipe_L.transform, { .9f , 0, -2.0f }, 90);
+	OrientWithCar(pipe_L.transform, { 0.9f , 0, -2.0f }, 90);
 	pipe_L.Render();
 
-	OrientWithCar(pipe_R.transform, { -.9f , 0, -2.0f }, 90);
+	OrientWithCar(pipe_R.transform, { -0.9f , 0, -2.0f }, 90);
 	pipe_R.Render();
 
 	// Fake plane
@@ -358,7 +354,7 @@ vec3 Vehicle::GetObserverPos()
 
 	mat4x4 tempTransform;
 
-	btVector3 tempOffset(ObserverPos.x, ObserverPos.y, ObserverPos.z);
+	btVector3 tempOffset(observerPos.x * observerDistance, observerPos.y * observerDistance, observerPos.z * observerDistance);
 
 	OrientWithCar(tempTransform, tempOffset);
 
@@ -462,17 +458,29 @@ void Vehicle::UpdateRotateLimit()
 
 	if (abs(currentSpeed) < 50)
 	{
-		turn = 15;
+		turn = 15.0f;
 	}
 	else if (abs(currentSpeed) < 75)
 	{
-		turn = 3;
+		turn = 3.0f;
 	}
 	else
 	{
 		turn = 2.0f;
 	}
 }
+
+void Vehicle::UpdateObserverDistance()
+{
+	int currentSpeed = GetKmh();
+
+	float relative = (currentSpeed - 80) / 240.0f;
+
+	float tempDistance = (observerMaxDistance - observerMinDistance) * relative;
+
+	observerDistance = observerMaxDistance + tempDistance;	
+}
+
 
 /// <summary>
 /// Orientation with car

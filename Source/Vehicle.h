@@ -72,11 +72,15 @@ private:
 	float rotateSpeed = 5.0f;
 	float speed = 1000.0f;
 	float acceleration = 0.0f;
-	float maxVelocity = 180.0f;
+	float maxVelocity = 120.0f;
+	float maxAccelerationVelocity = 260.0f;
 
-	float frictionCoheficien = 0.1f;
+	float frictionCoheficien = 0.3f;
 
-	vec3 ObserverPos = { 0,0,0 };
+	vec3 observerPos = { 0,0,0 };
+	float observerDistance = 10.0f;
+	float observerMaxDistance = 30.0f;
+	float observerMinDistance = 10.0f;
 
 	float smokeStep = 0.1f;
 	float weelPrintStep = 0.2f;
@@ -92,6 +96,8 @@ private:
 	void InitShapes();
 
 	void UpdateRotateLimit();
+
+	void UpdateObserverDistance();
 
 	void OrientWithCar(mat4x4& transform, btVector3 offset, float angle = 0);
 };
