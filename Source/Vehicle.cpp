@@ -48,7 +48,7 @@ void Vehicle::Start()
 	info->suspensionCompression = 0.83f;
 	info->suspensionDamping = 0.88f;
 	info->maxSuspensionTravelCm = 1000.0f;
-	info->frictionSlip = 8.5f;
+	info->frictionSlip = 200.5f;
 	info->maxSuspensionForce = 6000.0f;
 
 	// Wheel properties ---------------------------------------
@@ -188,7 +188,7 @@ void Vehicle::Update()
 	weelPrintStep -= _app->fps;
 
 	// Update countdown
-	if (boostCounter > 0.0f) boostCounter -= _app->timer.getDeltaTime();
+	if (boostCounter > 0.0f) boostCounter -= _app->fps;
 	else
 	{
 		boostOn = false;
@@ -198,9 +198,18 @@ void Vehicle::Update()
 	if (_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 	{
 		if (!boostOn)Brake(150);
-		else Brake(350);
+		else Brake(350);		
 
-		turn = 5.0f;
+		float currentSpeed = GetKmh();
+
+		if (abs(currentSpeed) < 250)
+		{
+			turn = 4.0f;
+		}
+		else
+		{
+			turn = 2.5f;
+		}
 
 		if (smokeStep <= 0)
 		{
@@ -505,9 +514,13 @@ void Vehicle::UpdateRotateLimit()
 	{
 		turn = 3.0f;
 	}
-	else
+	else if (abs(currentSpeed) < 250)
 	{
 		turn = 2.0f;
+	}
+	else
+	{
+		turn = 0.5f;
 	}
 }
 
