@@ -29,18 +29,19 @@ public:
 
 private:
 	float height = 64.0f;
-	float radius = 8.0f;
+	float radius = 16.0f;
 
-	bool onTaxi = false;
+	
 	
 public:
 
 	int serviceCount = 0;
+	bool onTaxi = false;
 
 	vec3* originPos = nullptr;
 	vec3* destinationPos = nullptr;
 
-	//PhysBody3D* pBody2 = nullptr;
+	PhysBody3D* pBody2 = nullptr;
 
 public:
 	/*GETTERS AND SETTERS*/
