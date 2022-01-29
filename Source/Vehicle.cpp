@@ -142,7 +142,7 @@ void Vehicle::Start()
 
 	// No funciona
 	body->setFriction(0.8f);
-	body->setRestitution(0.6f);
+	body->setRestitution(0.8f);
 
 	_app->physics->world->addRigidBody(body);
 
