@@ -35,6 +35,8 @@ private:
 	int currentList = 0;
 
 	int changeSceneSfxId = 0;
+
+	bool enable = true;
 };
 
 #endif // !__RADIOS_H__
