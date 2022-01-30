@@ -17,6 +17,8 @@ Dynamic position creation for clients
 
 - Shift for Nitro
 
+- SpaceBar to Restart when Losing
+
 - Q and E for changing radio
 
 - M to mute Radio
