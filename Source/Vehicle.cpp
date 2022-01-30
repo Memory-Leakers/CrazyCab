@@ -521,7 +521,7 @@ void Vehicle::UpdateRotateLimit()
 	}
 	else
 	{
-		turn = 0.5f;
+		turn = 1.0f;
 	}
 }
 

@@ -10,7 +10,9 @@ class Follower;
 class SceneGame :  public Scene
 {
 public:
+
 	Radios* radioManager = nullptr;
+
 	Follower* follower = nullptr;
 
 public:
@@ -29,8 +31,6 @@ public:
 	virtual bool PostUpdate();
 
 	virtual bool CleanUp();
-
-public:
 
 };
 
