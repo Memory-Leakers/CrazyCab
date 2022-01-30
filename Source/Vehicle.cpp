@@ -36,7 +36,6 @@ void Vehicle::Start()
 	v.normalize();
 	observerPos.Set(v.x(), v.y(), v.z());
 	observerDistance = 21;
-	//printf("X:%f\t Y:%f\t Z:%f\t", v.x(), v.y(), v.z());
 
 	info = new VehicleInfo();
 	// Car properties ----------------------------------------
@@ -183,6 +182,8 @@ void Vehicle::Start()
 void Vehicle::Update()
 {
 	vehicle->updateVehicle(_app->fps);
+
+	//printf("X:%f\t Y:%f\t Z:%f\t\n", GetPosition().x, GetPosition().y, GetPosition().z);
 
 	smokeStep -= _app->fps;
 	weelPrintStep -= _app->fps;
@@ -384,6 +385,8 @@ void Vehicle::CleanUp()
 void Vehicle::OnCollisionEnter(PhysBody3D* col)
 {
 	if (col->gameObject == nullptr) return;
+
+	if (col->gameObject->tag == Tag::TaxiClient) printf("Client!\n");
 
 	if (col->gameObject->tag == Tag::Booster)
 	{
