@@ -52,6 +52,8 @@ void Follower::AddFollower()
 
 		follower->pBody->SetPos(target->GetPosition().x + 2, 1, target->GetPosition().z + 2);
 
+		follower->primitive->color = Color(rand() % 2, rand() % 2, rand() % 2, 0.8f);
+
 		followers.add(follower);
 
 		_app->physics->AddConstraintP2P(*target->pBody, *follower->pBody, { 0,0,0 }, {6,0,0 });
@@ -65,6 +67,8 @@ void Follower::AddFollower()
 		follower->InitAsCube(1, 1, 1, 0.1);
 
 		follower->pBody->SetPos(target->GetPosition().x + 2, 1, target->GetPosition().z + 2);
+
+		follower->primitive->color = Color(rand() % 2, rand() % 2, rand() % 2, 0.8f);
 
 		followers.add(follower);
 
