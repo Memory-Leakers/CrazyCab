@@ -3,6 +3,7 @@
 #include "PhysBody3D.h"
 #include "ModuleScene.h"
 #include "ModuleInput.h"
+#include "ModuleAudio.h"
 #include "Smoke.h"
 #include "WeelPrint.h"
 #include <iostream>
@@ -178,6 +179,9 @@ void Vehicle::Start()
 	_app->physics->bodies.add(pBody);
 
 	_app->physics->world->addVehicle(vehicle);
+
+	driftsfx = _app->audio->LoadFx("Assets/Audios/Sfx/nitrosfx.wav", 10);
+	nitrosfx = _app->audio->LoadFx("Assets/Audios/Sfx/driftsfx.wav", 10);
 }
 
 void Vehicle::Update()
@@ -199,6 +203,7 @@ void Vehicle::Update()
 	{
 		if (!boostOn)Brake(150);
 		else Brake(350);		
+		_app->audio->PlayFx(driftsfx, 0);
 
 		float currentSpeed = GetKmh();
 
@@ -232,18 +237,24 @@ void Vehicle::Update()
 
 			smokeStep = 0.05;
 		}
+		
+		
 	}
 	else if (_app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_UP)
 	{
 		Brake(0);
 		turn = 3.0f;
+		Mix_HaltChannel(-1);
 	}
 	// Accelerate
 	else if (_app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		if (!boostOn) acceleration = 4000.0f;
 		currentVelocity = nitroVelocity;
-
+		if (Mix_Playing(2) == 0)
+		{
+			_app->audio->PlayFx(nitrosfx, 0, 2);
+		}
 		if (smokeStep <= 0);
 		{
 			// Calculate pos & rot
@@ -277,12 +288,14 @@ void Vehicle::Update()
 	{
 		if (!boostOn) acceleration = 0.0f;
 		currentVelocity = maxVelocity;
+		Mix_HaltChannel(2);
 	}
 	
 	if (boostOn && boostCounter > 0.0f)
 	{
 		acceleration = 6000;
 		currentVelocity = boostVelocity;
+		
 	}
 
 	// Go ahead

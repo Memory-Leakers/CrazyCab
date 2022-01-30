@@ -102,6 +102,8 @@ private:
 	// Fake Ground!!!
 	Cube ground;
 
+	uint nitrosfx,driftsfx;
+
 private:
 	void InitShapes();
 
