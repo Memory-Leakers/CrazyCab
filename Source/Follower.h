@@ -5,7 +5,6 @@
 class Follower : public GameObject
 {
 private:
-	List<GameObject*> followers;
 	GameObject* target = nullptr;
 
 public:
@@ -21,6 +20,12 @@ public:
 	void CleanUp() override;
 
 	void AddFollower();
+
+	void DestroyFollowers();
+
+	float followerCounter = 1.0f;
+
+	List<GameObject*> followers;
 
 };
 

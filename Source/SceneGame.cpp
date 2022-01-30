@@ -15,6 +15,7 @@ float tiempo = 8.0f;
 float dt2 = 0.0f;
 int cont = 0;
 int i = 0;
+float loseTime = 240.0f;
 
 SceneGame::SceneGame(Application* app) :Scene(app)
 {
@@ -44,6 +45,7 @@ bool SceneGame::InitScene()
 
 bool SceneGame::Start()
 {
+	float loseTime = 120.0f;
 	LOG("Loading Intro assets");
 	bool ret = true;
 
@@ -102,6 +104,11 @@ bool SceneGame::Start()
 bool SceneGame::PreUpdate()
 {
 	Scene::PreUpdate();
+
+	loseTime -= _app->fps;
+	if (loseTime <= 0 && follower->followers.count() < 10) printf("Lose");//Lose
+
+	if (follower->followers.count() == 10) printf("Win");
 
 	GLfloat colors[][3] = { { 0.0f, 0.4f, 1.0f},{0.0f,0.3f,1.0f},{0.0f,0.2f,1.0f},
 							{0.0f,0.1f,1.0f},{0.0f,0.0f,1.0f},{0.0f,0.0f,0.9f},

@@ -58,6 +58,8 @@ public:
 
 	void OnCollisionEnter(PhysBody3D* col) override;
 
+	void Respawn();
+
 	vec3 GetObserverPos();
 	void Render();
 	void ApplyEngineForce(float force);
@@ -104,6 +106,7 @@ private:
 
 	uint nitrosfx,driftsfx;
 
+  btTransform defaultTransform;
 private:
 	void InitShapes();
 

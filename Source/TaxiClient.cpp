@@ -17,11 +17,13 @@ TaxiClient::~TaxiClient()
 void TaxiClient::Start()
 {
 	generatePosition();
-	pBody = _app->physics->CreateCylinderArea(radius, height, *originPos);
+	pBody = _app->physics->CreateCubeArea(10, 30, 10, *originPos);
 	pBody->gameObject = this;
-	pBody2 = _app->physics->CreateCylinderArea(radius, height, *destinationPos);
+	pBody2 = _app->physics->CreateCubeArea(10, 30, 10, *destinationPos);
 	pBody2->gameObject = this;
-	this->primitive = new Cylinder(radius, height);
+	this->primitive = new Cube(10, 30, 10);
+	this->primitive->color = Red;
+	this->primitive->color.a = 0.6f;
 }
 
 void TaxiClient::PreUpdate()
@@ -89,16 +91,16 @@ void TaxiClient::OnTriggerEnter(PhysBody3D* col)
 			std::cout << "N?" << serviceCount << std::endl;
 		}
 	}
-	if (col->gameObject->tag == Tag::Wall) {
+	/*if (col->gameObject->tag == Tag::Wall) {
 		generatePosition();
 		onTaxi = false;
 		std::cout << "NOPE" << std::endl;
-	}
+	}*/
 }
 
 void TaxiClient::generatePosition()
 {
-	float xOrigin, zOrigin, xDestination, zDestination, distance;
+	/*float xOrigin, zOrigin, xDestination, zDestination, distance;
 	xOrigin = rand() % 800 + 1;
 	zOrigin = rand() % 800 + 1;
 	xDestination = rand() % 800 + 1;
@@ -113,12 +115,17 @@ void TaxiClient::generatePosition()
 
 	//	distance = abs(sqrt(xOrigin * xOrigin + zOrigin * zOrigin) - sqrt(xDestination * xDestination + zDestination * zDestination));
 	//}
-
+	*/
 
 	RELEASE(originPos);
 	RELEASE(destinationPos);
-	originPos = new vec3({xOrigin, 32.0f, zOrigin});
-	destinationPos = new vec3({ xDestination, 32.0f, zDestination });
+
+	int randOrigin = rand() % 12;
+	int randDestination = rand() % 12;
+	while (randOrigin == randDestination) randDestination = rand() % 12;
+
+	originPos = new vec3({spawnPositions[randOrigin].x, 1.0f,spawnPositions[randOrigin].z});
+	destinationPos = new vec3({ spawnPositions[randDestination].x, 1.0f,spawnPositions[randDestination].z });
 
 	if (pBody != nullptr)
 	{

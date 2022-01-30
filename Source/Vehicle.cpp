@@ -37,7 +37,6 @@ void Vehicle::Start()
 	v.normalize();
 	observerPos.Set(v.x(), v.y(), v.z());
 	observerDistance = 21;
-	//printf("X:%f\t Y:%f\t Z:%f\t", v.x(), v.y(), v.z());
 
 	info = new VehicleInfo();
 	// Car properties ----------------------------------------
@@ -176,6 +175,8 @@ void Vehicle::Start()
 	body->setUserPointer(pBody);
 	pBody->SetPos(150, 5, 180);
 
+	defaultTransform = body->getWorldTransform();
+
 	_app->physics->bodies.add(pBody);
 
 	_app->physics->world->addVehicle(vehicle);
@@ -186,7 +187,14 @@ void Vehicle::Start()
 
 void Vehicle::Update()
 {
+	if(_app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		Respawn();
+	}
+
 	vehicle->updateVehicle(_app->fps);
+
+	//printf("X:%f\t Y:%f\t Z:%f\t\n", GetPosition().x, GetPosition().y, GetPosition().z);
 
 	smokeStep -= _app->fps;
 	weelPrintStep -= _app->fps;
@@ -398,12 +406,21 @@ void Vehicle::OnCollisionEnter(PhysBody3D* col)
 {
 	if (col->gameObject == nullptr) return;
 
+	if (col->gameObject->tag == Tag::TaxiClient) printf("Client!\n");
+
 	if (col->gameObject->tag == Tag::Booster)
 	{
 		boostCounter = boostCoolDown;
 		boostOn = true;
 		ApplyEngineForce(7000);
 	}
+}
+
+void Vehicle::Respawn()
+{
+	pBody->SetLinearVelocity(0, 0, 0);
+
+	pBody->body->setWorldTransform(defaultTransform);
 }
 
 vec3 Vehicle::GetObserverPos()
@@ -531,7 +548,7 @@ void Vehicle::UpdateRotateLimit()
 	}
 	else
 	{
-		turn = 0.5f;
+		turn = 1.0f;
 	}
 }
 
@@ -545,7 +562,6 @@ void Vehicle::UpdateObserverDistance()
 
 	observerDistance = observerMaxDistance + tempDistance;	
 }
-
 
 /// <summary>
 /// Orientation with car
