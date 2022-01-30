@@ -174,6 +174,8 @@ void Vehicle::Start()
 	body->setUserPointer(pBody);
 	pBody->SetPos(150, 5, 180);
 
+	defaultTransform = body->getWorldTransform();
+
 	_app->physics->bodies.add(pBody);
 
 	_app->physics->world->addVehicle(vehicle);
@@ -181,6 +183,11 @@ void Vehicle::Start()
 
 void Vehicle::Update()
 {
+	if(_app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		Respawn();
+	}
+
 	vehicle->updateVehicle(_app->fps);
 
 	//printf("X:%f\t Y:%f\t Z:%f\t\n", GetPosition().x, GetPosition().y, GetPosition().z);
@@ -396,6 +403,13 @@ void Vehicle::OnCollisionEnter(PhysBody3D* col)
 	}
 }
 
+void Vehicle::Respawn()
+{
+	pBody->SetLinearVelocity(0, 0, 0);
+
+	pBody->body->setWorldTransform(defaultTransform);
+}
+
 vec3 Vehicle::GetObserverPos()
 {
 	vec3 ret;
@@ -535,7 +549,6 @@ void Vehicle::UpdateObserverDistance()
 
 	observerDistance = observerMaxDistance + tempDistance;	
 }
-
 
 /// <summary>
 /// Orientation with car
