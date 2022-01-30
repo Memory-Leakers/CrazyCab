@@ -175,6 +175,7 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="Primitive.cpp" />
+    <ClCompile Include="Radios.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="Smoke.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="PhysVehicle3D.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Primitive.h" />
+    <ClInclude Include="Radios.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Smoke.h" />

@@ -7,6 +7,7 @@
 #include "ModuleMap.h"
 #include "Arrow.h"
 #include "Booster.h"
+#include "Radios.h"
 
 
 SceneGame::SceneGame(Application* app) :Scene(app)
@@ -52,8 +53,10 @@ bool SceneGame::Start()
 
 	Vehicle* v = new Vehicle("vehicle", Tag::Vehicle, _app);
 	TaxiClient* t = new TaxiClient("taxiClient", Tag::TaxiClient, _app);
+	radioManager = new Radios(_app);
 	gameObjects.add(v);
 	gameObjects.add(t);
+	gameObjects.add(radioManager);
 	//gameObjects.add(g);
 	Scene::Start();
 
@@ -77,6 +80,7 @@ bool SceneGame::Start()
 	_app->camera->LookAt(v->GetPosition());
 
 	_app->camera->SetTarget(v, vec3{ 0,5,-15 });
+
 
 	return ret;
 }

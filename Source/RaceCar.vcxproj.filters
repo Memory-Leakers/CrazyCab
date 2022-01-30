@@ -85,6 +85,7 @@
     <ClCompile Include="Booster.cpp">
       <Filter>Source\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Radios.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h">
@@ -177,6 +178,7 @@
     <ClInclude Include="Booster.h">
       <Filter>Header\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Radios.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

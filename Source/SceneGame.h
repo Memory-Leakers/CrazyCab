@@ -3,12 +3,12 @@
 
 #include "Scene.h"
 
-class Player;
+class Radios;
 
 class SceneGame :  public Scene
 {
 public:
-	Player* player = nullptr;
+	Radios* radioManager = nullptr;
 
 public:
 	SceneGame(Application* app);

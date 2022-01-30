@@ -364,8 +364,6 @@ void Vehicle::PostUpdate()
 {
 	Render();
 
-	printf("x: %f, y:%f z: %f\n", GetPosition().x, GetPosition().y, GetPosition().z);
-
 	// Shape Orientacion
 	OrientWithCar(pipe_L.transform, { 0.9f , 0, -2.0f }, 90);
 	pipe_L.Render();
