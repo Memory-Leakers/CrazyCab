@@ -21,6 +21,8 @@ public:
 
 	void AddFollower();
 
+	void DestroyFollowers();
+
 	float followerCounter = 1.0f;
 
 	List<GameObject*> followers;

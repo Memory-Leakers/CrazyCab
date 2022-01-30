@@ -106,7 +106,7 @@ bool SceneGame::PreUpdate()
 	Scene::PreUpdate();
 
 	loseTime -= _app->fps;
-	if (loseTime <= 0) printf("Lose");//Lose
+	if (loseTime <= 0 && follower->followers.count() < 10) printf("Lose");//Lose
 
 	if (follower->followers.count() == 10) printf("Win");
 
