@@ -499,7 +499,7 @@ void Vehicle::InitShapes()
 
 	// Fake Ground
 	ground.color = Ground;
-	ground.size = { 2000, 0.1, 2000};
+	ground.size = { 4000, 0.1, 4000};
 }
 
 void Vehicle::UpdateRotateLimit()
