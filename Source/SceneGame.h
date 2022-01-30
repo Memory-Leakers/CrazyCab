@@ -26,6 +26,9 @@ public:
 	virtual bool PostUpdate();
 
 	virtual bool CleanUp();
+
+public:
+
 };
 
 #endif // !__SCENEGAME_H__

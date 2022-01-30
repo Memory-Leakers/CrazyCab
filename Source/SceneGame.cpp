@@ -8,6 +8,7 @@
 #include "Arrow.h"
 #include "Booster.h"
 #include "Radios.h"
+#include "External/SDL/include/SDL_opengl.h"
 
 
 SceneGame::SceneGame(Application* app) :Scene(app)
@@ -80,6 +81,10 @@ bool SceneGame::Start()
 	_app->camera->LookAt(v->GetPosition());
 
 	_app->camera->SetTarget(v, vec3{ 0,5,-15 });
+	//0,0.4,1,1 ->0,0,0.3,1
+
+
+	glClearColor(0.0, 0.4, 1, 1);
 
 
 	return ret;
@@ -89,12 +94,31 @@ bool SceneGame::PreUpdate()
 {
 	Scene::PreUpdate();
 
+	GLfloat colors[][3] = { { 0.0f, 0.4f, 1.0f}, {0.0f, 0.0f, 0.3f } };
+	static int back;
+
+	float vec[3];
+	vec[0] = colors[1][0] - colors[0][0];
+	vec[1] = colors[1][1] - colors[0][1];
+	vec[2] = colors[1][2] - colors[0][2];
+
+	float module = sqrt(pow(vec[0], 2) + pow(vec[1], 2) + pow(vec[2], 2));
+
+	glClear(GL_COLOR_BUFFER_BIT);
+	back = 0;
+	glClearColor(colors[back][0], colors[back][1], colors[back][2], 1.0f);
+
 	return true;
 }
+
+
+
+
 
 bool SceneGame::Update()
 {
 	Scene::Update();
+	/*daynight.Update();*/
 
 	return true;
 }
