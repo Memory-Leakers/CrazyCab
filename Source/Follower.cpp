@@ -17,6 +17,7 @@ void Follower::Start()
 
 void Follower::Update()
 {
+	followerCounter -= _app->fps;
 	for (int i = 0; i < followers.count(); i++)
 	{
 		followers[i]->Update();
@@ -43,6 +44,7 @@ void Follower::CleanUp()
 
 void Follower::AddFollower()
 {
+	if (followerCounter > 0) return;
 	if (followers.count() == 0)
 	{
 		// First Follower
@@ -57,6 +59,7 @@ void Follower::AddFollower()
 		followers.add(follower);
 
 		_app->physics->AddConstraintP2P(*target->pBody, *follower->pBody, { 0,0,0 }, {6,0,0 });
+		followerCounter = 1.0f;
 	}
 	else 
 	{
@@ -73,5 +76,11 @@ void Follower::AddFollower()
 		followers.add(follower);
 
 		_app->physics->AddConstraintP2P(*lastFollower->pBody, *follower->pBody, { 0,0,0 }, {4,0,0 });
+		followerCounter = 1.0f;
 	}
+}
+
+void Follower::DestroyFollowers()
+{
+	followers.clearPtr();
 }
