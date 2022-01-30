@@ -3,13 +3,17 @@
 
 #include "Scene.h"
 
+
 class Player;
 
 class SceneGame :  public Scene
 {
 public:
 	Player* player = nullptr;
-	//Timer daynight;
+
+	int i = 0;
+
+	
 
 public:
 	SceneGame(Application* app);
@@ -28,7 +32,8 @@ public:
 
 	virtual bool CleanUp();
 
-public:
+private:
+	
 	
 };
 

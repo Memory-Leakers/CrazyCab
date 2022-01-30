@@ -9,6 +9,9 @@
 #include "Booster.h"
 #include "External/SDL/include/SDL_opengl.h"
 
+float tiempo = 8.0f;
+float dt2 = 0.0f;
+int cont = 0;
 
 SceneGame::SceneGame(Application* app) :Scene(app)
 {
@@ -90,20 +93,45 @@ bool SceneGame::PreUpdate()
 {
 	Scene::PreUpdate();
 
-	GLfloat colors[][3] = { { 0.0f, 0.4f, 1.0f}, {0.0f, 0.0f, 0.3f } };
-	static int back;
 
-	float vec[3];
-	vec[0] = colors[1][0] - colors[0][0];
-	vec[1] = colors[1][1] - colors[0][1];
-	vec[2] = colors[1][2] - colors[0][2];
+	
+	GLfloat colors[][3] = { { 0.0f, 0.4f, 1.0f},{0.0f,0.3f,1.0f},{0.0f,0.2f,1.0f},
+							{0.0f,0.1f,1.0f},{0.0f,0.0f,1.0f},{0.0f,0.0f,0.9f},
+							{0.0f,0.0f,0.8f},{0.0f,0.0f,0.7f},{0.0f,0.0f,0.6f},
+							{0.0f,0.0f,0.5f},{0.0f,0.0f,0.4f},{0.0f, 0.0f, 0.3f } };
+	static int back = 0;
 
-	float module = sqrt(pow(vec[0], 2) + pow(vec[1], 2) + pow(vec[2], 2));
+	/*GLfloat colors[][3] = { { 0.0f, 0.4f, 1.0f},{0.0f, 0.0f, 0.3f } };
+	static int back = 0;*/
+	if (tiempo < dt2)
+	{
+		glClear(GL_COLOR_BUFFER_BIT);
+		//glClearColor(colors[back][0], colors[back][1], colors[back][2], 1.0f);
+		glClearColor(colors[back + i][0], colors[back + i][1], colors[back + i][2], 1.0f);
 
-	glClear(GL_COLOR_BUFFER_BIT);
-	back = 0;
-	glClearColor(colors[back][0], colors[back][1], colors[back][2], 1.0f);
-
+		
+		if (i == 11)
+		{
+			cont = 1;
+		}
+		else if (cont == 0)
+		{
+			i += 1;
+		}
+		if (cont == 1)
+		{
+			i -= 1;
+		}
+		if (i == 0)
+		{
+			cont = 0;
+		}
+		dt2 = 0;
+	}
+	else
+	{
+		dt2 += _app->fps;
+	}
 	return true;
 }
 
