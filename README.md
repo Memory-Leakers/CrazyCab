@@ -33,7 +33,7 @@ Dynamic position creation for clients
 * [Loproxi](https://github.com/Loproxi) - Pol Rius
 * [AdriaSeSa](https://github.com/AdriaSeSa) -Adrià Sellarés
 
-## Release Link [Release]()
+## Release Link [Release](https://github.com/Memory-Leakers/CrazyCab/releases/tag/1.0v)
 
 
 ## License:
