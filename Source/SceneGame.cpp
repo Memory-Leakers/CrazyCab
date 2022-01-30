@@ -7,11 +7,14 @@
 #include "ModuleMap.h"
 #include "Arrow.h"
 #include "Booster.h"
+#include "Radios.h"
 #include "External/SDL/include/SDL_opengl.h"
+#include "Follower.h"
 
 float tiempo = 8.0f;
 float dt2 = 0.0f;
 int cont = 0;
+int i = 0;
 
 SceneGame::SceneGame(Application* app) :Scene(app)
 {
@@ -29,7 +32,8 @@ bool SceneGame::InitScene()
 		GameObject* g = new GameObject("wall", Tag::Wall, _app);
 		g->InitAsCube(_app->map->mapObjects[i].dimensions[0] * scale * 9, _app->map->mapObjects[i].dimensions[1] * (rand() %40) + 80 * scale, _app->map->mapObjects[i].dimensions[2] * scale * 9 , 99999);
 		g->pBody->SetPos(_app->map->mapObjects[i].position.x + ((_app->map->mapObjects[i].dimensions[0] / 2) * 16), 1, _app->map->mapObjects[i].position.y + ((_app->map->mapObjects[i].dimensions[2] / 2)*16));
-		g->pBody->body->setRestitution(0.4f);
+		//g->pBody->body->setRestitution(0.4f);
+		g->pBody->body->setAngularFactor(btVector3(0, 0, 0));
 		Color wallColors[4] = { Color(1,1,1,1), Color(0.5f, 0.5f, 0.5f, 1), Color(0.4f, 0.4f, 0.4f, 1), Color(0.6f, 0.6f, 0.6f, 1) };
 		g->primitive->color = wallColors[rand() % 4];
 
@@ -56,10 +60,11 @@ bool SceneGame::Start()
 
 	Vehicle* v = new Vehicle("vehicle", Tag::Vehicle, _app);
 	TaxiClient* t = new TaxiClient("taxiClient", Tag::TaxiClient, _app);
+	radioManager = new Radios(_app);
 	gameObjects.add(v);
 	gameObjects.add(t);
+	gameObjects.add(radioManager);
 	//gameObjects.add(g);
-	Scene::Start();
 
 	Arrow* arrowTest = new Arrow("testarrow", Tag::None, _app, v, t);
 	gameObjects.add(arrowTest);
@@ -77,14 +82,19 @@ bool SceneGame::Start()
 	Booster* boosterTest6 = new Booster("booster", Tag::Booster, _app, vec3(517, 1, 820), vec3(20, 4, 70), true);
 	gameObjects.add(boosterTest6);
 
+	follower = new Follower("f", Tag::None, _app, v);
+	gameObjects.add(follower);
+	Scene::Start();
+
+	//follower->Start();
+
 	_app->camera->Move(v->GetPosition() + vec3{ 0,5,-15 });
 	_app->camera->LookAt(v->GetPosition());
 
 	_app->camera->SetTarget(v, vec3{ 0,5,-15 });
-	//0,0.4,1,1 ->0,0,0.3,1
-
 
 	glClearColor(0.0, 0.4, 1, 1);
+
 
 	return ret;
 }
@@ -93,8 +103,6 @@ bool SceneGame::PreUpdate()
 {
 	Scene::PreUpdate();
 
-
-	
 	GLfloat colors[][3] = { { 0.0f, 0.4f, 1.0f},{0.0f,0.3f,1.0f},{0.0f,0.2f,1.0f},
 							{0.0f,0.1f,1.0f},{0.0f,0.0f,1.0f},{0.0f,0.0f,0.9f},
 							{0.0f,0.0f,0.8f},{0.0f,0.0f,0.7f},{0.0f,0.0f,0.6f},
@@ -109,7 +117,7 @@ bool SceneGame::PreUpdate()
 		//glClearColor(colors[back][0], colors[back][1], colors[back][2], 1.0f);
 		glClearColor(colors[back + i][0], colors[back + i][1], colors[back + i][2], 1.0f);
 
-		
+
 		if (i == 11)
 		{
 			cont = 1;
@@ -135,13 +143,10 @@ bool SceneGame::PreUpdate()
 	return true;
 }
 
-
-
-
-
 bool SceneGame::Update()
 {
 	Scene::Update();
+	//if (follower != nullptr) follower->Update();
 	/*daynight.Update();*/
 
 	return true;
@@ -150,6 +155,8 @@ bool SceneGame::Update()
 bool SceneGame::PostUpdate()
 {
 	Scene::PostUpdate();
+
+	//if (follower != nullptr) follower->PostUpdate();
 
 	//Plane p(0, 1, 0, 0);
 	//p.color = Green;
@@ -164,6 +171,14 @@ bool SceneGame::CleanUp()
 	_app->camera->RemoveTarget();
 
 	Scene::CleanUp();
+
+	/*if (follower != nullptr)
+	{
+		follower->CleanUp();
+		delete follower;
+		follower = nullptr;
+	}*/
+
 
 	return true;
 }

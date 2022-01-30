@@ -124,7 +124,7 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 }
 
 // Load WAV
-unsigned int ModuleAudio::LoadFx(const char* path)
+unsigned int ModuleAudio::LoadFx(const char* path, int volume)
 {
 	unsigned int ret = 0;
 
@@ -136,6 +136,7 @@ unsigned int ModuleAudio::LoadFx(const char* path)
 	}
 	else
 	{
+		chunk->volume = volume;
 		fx.add(chunk);
 		ret = fx.count();
 	}

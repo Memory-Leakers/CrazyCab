@@ -11,8 +11,6 @@ class Scene
 protected:
 	int ID = 0;
 
-	int platformLenght = 2;
-
 	Application* _app = nullptr;
 
 	List<GameObject*> gameObjects;

@@ -158,6 +158,7 @@
     <ClCompile Include="Booster.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="External\PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="Follower.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Globals.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="Primitive.cpp" />
+    <ClCompile Include="Radios.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="Smoke.cpp" />
@@ -188,6 +190,7 @@
     <ClInclude Include="Booster.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="External\PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="Follower.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Light.h" />
@@ -206,6 +209,7 @@
     <ClInclude Include="PhysVehicle3D.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Primitive.h" />
+    <ClInclude Include="Radios.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Smoke.h" />

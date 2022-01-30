@@ -85,6 +85,12 @@
     <ClCompile Include="Booster.cpp">
       <Filter>Source\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Radios.cpp">
+      <Filter>Source\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Follower.cpp">
+      <Filter>Source\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h">
@@ -175,6 +181,12 @@
       <Filter>Header\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Booster.h">
+      <Filter>Header\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Radios.h">
+      <Filter>Header\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Follower.h">
       <Filter>Header\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

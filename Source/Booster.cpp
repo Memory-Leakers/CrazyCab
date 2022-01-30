@@ -8,6 +8,6 @@ Booster::Booster(std::string name, Tag tag, Application* app, vec3 pos, vec3 dim
 	this->boost = boost;
 
 	this->primitive = new Cube(dimensions.x, dimensions.y, dimensions.z);
-	this->primitive->color = boost ? Color(1, 0.5, 0) : Color(0,0,255);
+	this->primitive->color = boost ? Color(1, 0.5, 0, 0.6) : Color(0,0,1, 0.6);
 
 }

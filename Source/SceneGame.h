@@ -2,18 +2,18 @@
 #define __SCENEGAME_H__
 
 #include "Scene.h"
+#include "glmath.h"
 
-
-class Player;
+class Radios;
+class Follower;
 
 class SceneGame :  public Scene
 {
 public:
-	Player* player = nullptr;
 
-	int i = 0;
+	Radios* radioManager = nullptr;
 
-	
+	Follower* follower = nullptr;
 
 public:
 	SceneGame(Application* app);
@@ -32,9 +32,6 @@ public:
 
 	virtual bool CleanUp();
 
-private:
-	
-	
 };
 
 #endif // !__SCENEGAME_H__
