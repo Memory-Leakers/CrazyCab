@@ -17,6 +17,8 @@ Dynamic position creation for clients
 
 - Shift for Nitro
 
+- Left ctrl for drifting
+
 - SpaceBar to Restart when Losing
 
 - Q and E for changing radio
@@ -32,6 +34,7 @@ Dynamic position creation for clients
 * [AdriaSeSa](https://github.com/AdriaSeSa) -Adrià Sellarés
 
 ## Release Link [Release]()
+
 
 ## License:
 This project is licensed under an unmodifield MIT licence, which is an OSI-certifield license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
