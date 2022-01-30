@@ -158,6 +158,7 @@
     <ClCompile Include="Booster.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="External\PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="Follower.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Globals.h" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Booster.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="External\PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="Follower.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Light.h" />

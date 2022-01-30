@@ -2,6 +2,9 @@
 #include "ModulePhysics3D.h"
 #include "ModuleInput.h"
 #include <iostream>
+#include "ModuleScene.h"
+#include "SceneGame.h"
+#include "Follower.h"
 
 TaxiClient::TaxiClient(std::string name, Tag tag, Application* _app) : GameObject(name, tag, _app)
 {
@@ -66,6 +69,9 @@ void TaxiClient::OnTriggerEnter(PhysBody3D* col)
 	if (col->gameObject->tag == Tag::Vehicle)
 	{
 		std::cout << "Vehicle entered ClientTaxi Area" << std::endl;
+
+		SceneGame* scene = (SceneGame*)_app->scene->scenes[1];
+		scene->follower->AddFollower();
 
 		if (!onTaxi) //On Origin
 		{
