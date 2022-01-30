@@ -9,6 +9,7 @@ class SceneGame :  public Scene
 {
 public:
 	Player* player = nullptr;
+	//Timer daynight;
 
 public:
 	SceneGame(Application* app);
@@ -26,6 +27,9 @@ public:
 	virtual bool PostUpdate();
 
 	virtual bool CleanUp();
+
+public:
+	
 };
 
 #endif // !__SCENEGAME_H__
